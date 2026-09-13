@@ -20,7 +20,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
-        <i id="toast-icon" class="fas fa-info-circle text-indigo-400"></i>
+        <i id="toast-icon" class="fas fa-info-circle font-medium text-indigo-400"></i>
         <span id="toast-message" class="text-sm font-medium"></span>
     </div>
 
@@ -44,7 +44,7 @@
                 <i class="fas fa-search absolute left-3.5 top-3 text-gray-400 text-sm"></i>
             </div>
 
-            <!-- Actions -->
+            <!-- Actions (HANYA CART & HOME UNTUK PEMBELI) -->
             <div class="flex items-center space-x-2 sm:space-x-4">
                 <button onclick="navigateTo('home')" class="p-2 text-gray-600 hover:text-indigo-600 rounded-lg hover:bg-gray-100 transition" title="Home">
                     <i class="fas fa-store text-lg"></i>
@@ -52,11 +52,6 @@
                 <button onclick="openCartModal()" class="p-2 text-gray-600 hover:text-indigo-600 rounded-lg hover:bg-gray-100 transition relative" title="Cart">
                     <i class="fas fa-shopping-bag text-lg"></i>
                     <span id="cartCount" class="absolute top-1 right-1 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-                </button>
-                <!-- SELLER ACCESS ONLY -->
-                <button onclick="openSellerAuthModal()" class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-indigo-600 transition flex items-center space-x-2 shadow-sm">
-                    <i class="fas fa-lock"></i>
-                    <span class="hidden sm:inline" id="sellerBtnText">Seller Portal</span>
                 </button>
             </div>
         </div>
@@ -72,7 +67,7 @@
     <!-- MAIN CONTAINER -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        <!-- ==================== CUSTOMER VIEW (BUYER DOES NOT NEED SIGN UP / LOG IN) ==================== -->
+        <!-- ==================== CUSTOMER VIEW ==================== -->
         <div id="customerView">
             <!-- HERO / BANNER -->
             <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-10 text-white mb-8 shadow-xl relative overflow-hidden">
@@ -115,26 +110,19 @@
             </div>
         </div>
 
-        <!-- PRODUCT DETAIL PAGE (HIDDEN BY DEFAULT) -->
+        <!-- PRODUCT DETAIL PAGE -->
         <div id="productDetailView" class="hidden">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
                 <span>Kembali ke Kedai</span>
             </button>
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Media Gallery -->
                 <div>
                     <div class="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 relative shadow-inner">
                         <img id="detailMainImage" src="" alt="Product" class="w-full h-full object-cover">
-                        <video id="detailVideo" controls class="w-full h-full object-cover hidden"></video>
                         <span id="detailBadge" class="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">NEW</span>
                     </div>
-                    <!-- Thumbnails -->
-                    <div id="detailThumbnails" class="flex space-x-3 overflow-x-auto pb-2">
-                        <!-- Dynamic Media Thumbnails -->
-                    </div>
                 </div>
-                <!-- Details & Actions -->
                 <div class="flex flex-col justify-between">
                     <div>
                         <span id="detailCategory" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Kategori</span>
@@ -163,7 +151,7 @@
             </div>
         </div>
 
-        <!-- CHECKOUT PAGE (HIDDEN BY DEFAULT) -->
+        <!-- CHECKOUT PAGE -->
         <div id="checkoutView" class="hidden max-w-2xl mx-auto">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
@@ -175,32 +163,28 @@
                     <span>Maklumat Pembelian Digital</span>
                 </h2>
                 
-                <!-- Order Summary -->
                 <div class="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Ringkasan Pesanan</h3>
-                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50">
-                        <!-- Dynamic Checkout Items -->
-                    </div>
+                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50"></div>
                     <div class="border-t border-gray-200 pt-3 mt-3 flex justify-between items-center font-bold text-gray-900">
                         <span>Jumlah Keseluruhan</span>
                         <span id="checkoutTotal" class="text-indigo-600 text-lg">RM 0.00</span>
                     </div>
                 </div>
 
-                <!-- Customer Info Form -->
                 <form id="checkoutForm" onsubmit="handleProceedToPayment(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penuh *</label>
-                        <input type="text" id="custName" required placeholder="Contoh: Ahmad Albab" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                        <input type="text" id="custName" required placeholder="Contoh: Ahmad Albab" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1">No. Telefon (WhatsApp) *</label>
-                            <input type="tel" id="custPhone" required pattern="^[0-9\-\+\s]{9,15}$" placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                            <input type="tel" id="custPhone" required pattern="^[0-9\-\+\s]{9,15}$" placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email (Akses Dihantar Ke Sini) *</label>
-                            <input type="email" id="custEmail" required placeholder="nama@email.com" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email *</label>
+                            <input type="email" id="custEmail" required placeholder="nama@email.com" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
                         </div>
                     </div>
                     <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 mt-6">
@@ -210,7 +194,7 @@
             </div>
         </div>
 
-        <!-- PAYMENT SECTION (HIDDEN BY DEFAULT) -->
+        <!-- PAYMENT SECTION -->
         <div id="paymentView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Pembayaran Imbas QR</span>
@@ -226,25 +210,14 @@
                     <span id="paymentAmountText" class="text-3xl font-extrabold text-indigo-600">RM 0.00</span>
                 </div>
 
-                <div class="bg-gray-50 p-3 rounded-xl text-xs text-gray-600 text-left mb-6 space-y-1">
-                    <p class="font-semibold text-gray-800">Nota Arahan:</p>
-                    <p>1. Imbas QR di atas menggunakan Bank/E-Wallet anda.</p>
-                    <p>2. Pastikan amaun imbasan tepat seperti di atas.</p>
-                    <p>3. Sistem mengesahkan transaksi secara automatik.</p>
-                </div>
-
-                <!-- Webhook / Gateway Simulator Section -->
-                <div class="border-t border-gray-100 pt-6">
-                    <p class="text-[11px] text-gray-400 mb-3 uppercase tracking-wider font-medium">Demo & Test Gateway Simulation</p>
-                    <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Simulasi Bayaran Berjaya</span>
-                    </button>
-                </div>
+                <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Simulasi Bayaran Berjaya</span>
+                </button>
             </div>
         </div>
 
-        <!-- ORDER SUCCESS PAGE (HIDDEN BY DEFAULT) -->
+        <!-- ORDER SUCCESS PAGE -->
         <div id="successView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce">
@@ -268,32 +241,71 @@
                         Kembali Ke Kedai
                     </button>
                 </div>
-                <p class="text-[11px] text-gray-400 mt-4">Link akses ini juga telah dihantar secara automatik ke email anda.</p>
+            </div>
+        </div>
+
+
+        <!-- ==================== SELLER LOGIN / SIGNUP PORTAL ==================== -->
+        <div id="sellerAuthView" class="hidden max-w-md mx-auto py-12">
+            <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-xl text-center">
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-1" id="authTitle">Seller Log In</h2>
+                <p class="text-xs text-gray-500 mb-6">Akses portal pengurusan kedai & jualan</p>
+
+                <!-- TAB SWITCH SIGNUP / LOGIN -->
+                <div class="flex bg-gray-100 p-1 rounded-xl mb-6 text-xs font-semibold">
+                    <button type="button" onclick="toggleAuthMode('login')" id="btnAuthLogin" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900">Log In</button>
+                    <button type="button" onclick="toggleAuthMode('signup')" id="btnAuthSignup" class="flex-1 py-2 rounded-lg text-gray-500">Sign Up</button>
+                </div>
+
+                <form id="sellerAuthForm" onsubmit="handleSellerAuth(event)" class="space-y-4 text-left">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Email Seller</label>
+                        <input type="email" id="authEmail" required placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-xl p-3">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Kata Laluan / PIN Akses</label>
+                        <input type="password" id="authPassword" required placeholder="••••••••" class="w-full text-xs border border-gray-200 rounded-xl p-3">
+                    </div>
+                    <div id="signupExtraFields" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Kedai / Penjual</label>
+                            <input type="text" id="authStoreName" placeholder="Schatelier Store" class="w-full text-xs border border-gray-200 rounded-xl p-3">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-xs py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 mt-2" id="authSubmitBtn">
+                        Masuk Ke Seller Hub
+                    </button>
+                </form>
+
+                <button onclick="navigateTo('home')" class="mt-6 text-xs text-gray-400 hover:text-gray-600 block w-full text-center">
+                    ← Kembali ke Kedai Pembeli
+                </button>
             </div>
         </div>
 
 
         <!-- ==================== SELLER / ADMIN DASHBOARD VIEW ==================== -->
         <div id="sellerView" class="hidden">
-            <!-- Seller Sub Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-200 mb-6 gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
                     <p class="text-xs text-gray-500">Pengurusan Produk Digital, Kategori & Jualan</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <!-- COPY LINK STORE BUTTON FOR SELLER -->
-                    <button onclick="copyStoreLink()" class="bg-emerald-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-emerald-700 transition flex items-center space-x-2 shadow-sm">
+                    <button onclick="copyStoreLink()" class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-emerald-100 transition flex items-center space-x-2">
                         <i class="fas fa-copy"></i>
-                        <span>Copy Store Link</span>
+                        <span>Copy Store Link (Buyer)</span>
                     </button>
-
                     <button onclick="openAddProductModal()" class="bg-indigo-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center space-x-2 shadow-sm">
                         <i class="fas fa-plus"></i>
                         <span>+ Add Product</span>
                     </button>
-                    <button onclick="logoutSeller()" class="bg-gray-100 text-gray-700 text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-gray-200 transition">
-                        Lihat Kedai
+                    <button onclick="logoutSeller()" class="bg-red-50 text-red-600 text-xs font-bold px-3 py-2.5 rounded-xl hover:bg-red-100 transition" title="Log Out Seller">
+                        <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
             </div>
@@ -347,9 +359,7 @@
                                     <th class="p-3 text-right">Tindakan</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerProductTable" class="divide-y divide-gray-100">
-                                <!-- Dynamic Seller Product Rows -->
-                            </tbody>
+                            <tbody id="sellerProductTable" class="divide-y divide-gray-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -376,9 +386,7 @@
                         <div class="p-4 border-b border-gray-100">
                             <h3 class="font-bold text-sm text-gray-900">Senarai Kategori Sedia Ada</h3>
                         </div>
-                        <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3" id="sellerCategoryList">
-                            <!-- Dynamic Categories Admin List -->
-                        </div>
+                        <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3" id="sellerCategoryList"></div>
                     </div>
                 </div>
             </div>
@@ -401,9 +409,7 @@
                                     <th class="p-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerOrderTable" class="divide-y divide-gray-100">
-                                <!-- Dynamic Order Rows -->
-                            </tbody>
+                            <tbody id="sellerOrderTable" class="divide-y divide-gray-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -425,9 +431,7 @@
                                     <th class="p-3">Jumlah Pesanan</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerCustomerTable" class="divide-y divide-gray-100">
-                                <!-- Dynamic Customer Rows -->
-                            </tbody>
+                            <tbody id="sellerCustomerTable" class="divide-y divide-gray-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -435,61 +439,24 @@
 
             <!-- TAB: SETTINGS -->
             <div id="seller-settings" class="seller-content hidden">
-                <div class="max-w-xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
-                    <div>
-                        <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Pembayaran DuitNow QR</h3>
-                        <form onsubmit="handleSaveSettings(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 mb-1">Gambar URL QR Code Pembayaran</label>
-                                <input type="url" id="settingQrUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 mb-1">Email Penerima Notifikasi Seller</label>
-                                <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                            </div>
-                            <button type="submit" class="bg-indigo-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition">Simpan Tetapan</button>
-                        </form>
-                    </div>
-
-                    <div class="border-t border-gray-100 pt-6">
-                        <h3 class="font-bold text-sm text-gray-900 mb-2">Tukar Seller PIN Code</h3>
-                        <p class="text-xs text-gray-500 mb-3">Tukar PIN keselamatan untuk akses ke Seller Hub.</p>
-                        <form onsubmit="handleChangeSellerPin(event)" class="space-y-3">
-                            <input type="password" id="newSellerPinInput" placeholder="Masukkan 4-digit PIN Baru" required class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                            <button type="submit" class="bg-gray-900 text-white font-bold text-xs px-4 py-2 rounded-xl hover:bg-indigo-600 transition">Kemaskini PIN</button>
-                        </form>
-                    </div>
+                <div class="max-w-xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Pembayaran DuitNow QR</h3>
+                    <form onsubmit="handleSaveSettings(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Gambar URL QR Code Pembayaran</label>
+                            <input type="url" id="settingQrUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Email Penerima Notifikasi Seller</label>
+                            <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
+                        </div>
+                        <button type="submit" class="bg-indigo-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition">Simpan Tetapan</button>
+                    </form>
                 </div>
             </div>
         </div>
 
     </main>
-
-    <!-- MODAL: SELLER AUTH / LOGIN / SIGNUP -->
-    <div id="sellerAuthModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mx-auto mb-3">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h3 class="font-bold text-lg text-gray-900">Akses Akses Seller Hub</h3>
-                <p class="text-xs text-gray-500 mt-1">Sila masukkan PIN Keselamatan Seller untuk teruskan.</p>
-            </div>
-            <form onsubmit="handleSellerLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Seller PIN Code *</label>
-                    <input type="password" id="sellerPinInput" required placeholder="Masukkan PIN (Lalai: 1234)" class="w-full border border-gray-200 rounded-xl p-3 text-center text-lg tracking-widest font-bold">
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100">
-                    Log Masuk Ke Dashboard
-                </button>
-                <button type="button" onclick="closeSellerAuthModal()" class="w-full bg-gray-100 text-gray-600 font-bold text-xs py-2.5 rounded-xl hover:bg-gray-200 transition">
-                    Batal
-                </button>
-            </form>
-            <p class="text-[10px] text-center text-gray-400 mt-4">Buyer tidak perlu log masuk atau mendaftar akaun.</p>
-        </div>
-    </div>
 
     <!-- MODAL: ADD / EDIT PRODUCT -->
     <div id="productModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -507,9 +474,7 @@
                     </div>
                     <div>
                         <label class="block font-semibold text-gray-700 mb-1">Kategori *</label>
-                        <select id="prodCategory" required class="w-full border border-gray-200 rounded-xl p-2.5 bg-white">
-                            <!-- Dynamic Categories Option -->
-                        </select>
+                        <select id="prodCategory" required class="w-full border border-gray-200 rounded-xl p-2.5 bg-white"></select>
                     </div>
                 </div>
 
@@ -543,27 +508,15 @@
                     <textarea id="prodFullDesc" rows="4" placeholder="Penerangan terperinci berkenaan bahan digital..." class="w-full border border-gray-200 rounded-xl p-2.5"></textarea>
                 </div>
 
-                <!-- Product Media -->
-                <div class="border-t border-gray-100 pt-3">
-                    <label class="block font-semibold text-gray-700 mb-1">Gambar Produk (URL Gambar Max 4)</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="url" id="prodImg1" placeholder="Gambar Utama URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg2" placeholder="Gambar 2 URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg3" placeholder="Gambar 3 URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg4" placeholder="Gambar 4 URL" class="border border-gray-200 rounded-xl p-2">
-                    </div>
-                </div>
-
                 <div>
-                    <label class="block font-semibold text-gray-700 mb-1">Video Produk (URL Video / MP4)</label>
-                    <input type="url" id="prodVideo" placeholder="https://..." class="w-full border border-gray-200 rounded-xl p-2.5">
+                    <label class="block font-semibold text-gray-700 mb-1">Gambar Utama Produk (URL)</label>
+                    <input type="url" id="prodImg1" placeholder="https://..." class="w-full border border-gray-200 rounded-xl p-2.5">
                 </div>
 
-                <!-- DIGITAL PRODUCT ACCESS LINK FIELD -->
                 <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
-                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / Canva / Link File) *</label>
+                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / Canva / File Link) *</label>
                     <input type="url" id="prodAccessLink" required placeholder="https://drive.google.com/file/d/..." class="w-full border border-indigo-200 rounded-xl p-2.5 bg-white">
-                    <p class="text-[10px] text-indigo-600 mt-1">Link ini sulit dan hanya diserahkan kepada pembeli selepas pembayaran disahkan PAID.</p>
+                    <p class="text-[10px] text-indigo-600 mt-1">Link ini diserahkan automatik kepada pembeli selepas bayaran disahkan.</p>
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4">
@@ -582,9 +535,7 @@
                     <h3 class="font-bold text-lg text-gray-900">Troli Belanja</h3>
                     <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
                 </div>
-                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]">
-                    <!-- Dynamic Cart Items -->
-                </div>
+                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]"></div>
             </div>
             <div class="border-t border-gray-100 pt-4">
                 <div class="flex justify-between items-center font-bold text-gray-900 mb-4">
@@ -610,7 +561,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyAD_r5DSnRUTmyBNnxd9guzwG9zv3HRhvg",
             authDomain: "schatelierstore.firebaseapp.com",
@@ -624,25 +574,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // STATE APP DATA
         let state = {
             categories: [],
             products: [],
             orders: [],
-            customers: [],
             cart: [],
             activeCategory: 'All',
             activeProductDetail: null,
             currentOrderPending: null,
             isSellerLoggedIn: false,
-            sellerPin: '1234', // PIN Lalai untuk Seller Sign In / Log In
+            authMode: 'login',
             settings: {
                 qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEFAULT_DUITNOW',
                 sellerEmail: 'admin@schatelier.com'
             }
         };
 
-        // INITIAL REALTIME DATABASE LISTENERS
         function initDbListeners() {
             onValue(ref(db, 'categories'), (snapshot) => {
                 const data = snapshot.val();
@@ -654,21 +601,18 @@
                 const data = snapshot.val();
                 state.products = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : getDefaultProducts();
                 renderProducts();
-                renderSellerDashboard();
+                if(state.isSellerLoggedIn) renderSellerDashboard();
             });
 
             onValue(ref(db, 'orders'), (snapshot) => {
                 const data = snapshot.val();
                 state.orders = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
-                renderSellerDashboard();
+                if(state.isSellerLoggedIn) renderSellerDashboard();
             });
 
             onValue(ref(db, 'settings'), (snapshot) => {
                 const data = snapshot.val();
-                if(data) {
-                    state.settings = data;
-                    if(data.sellerPin) state.sellerPin = data.sellerPin;
-                }
+                if(data) state.settings = data;
             });
         }
 
@@ -693,7 +637,7 @@
                     price: 15.00,
                     originalPrice: 30.00,
                     shortDesc: '30 Halaman latihan asas nombor & operasi tambah.',
-                    fullDesc: 'Modul lengkap mengandungi aktiviti bergambar untuk kanak-kanak prasekolah berumur 4-6 tahun. Mudah dicetak.',
+                    fullDesc: 'Modul lengkap mengandungi aktiviti bergambar untuk kanak-kanak prasekolah berumur 4-6 tahun.',
                     badge: 'BEST SELLER',
                     img1: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80',
                     accessLink: 'https://drive.google.com/file/d/demo-prasekolah/view'
@@ -713,7 +657,6 @@
             ];
         }
 
-        // RENDER FUNCTIONS
         function renderCategories() {
             const container = document.getElementById('categoryGrid');
             const selectOptions = document.getElementById('prodCategory');
@@ -780,10 +723,10 @@
                         </div>
                     </div>
                     <div class="p-3.5 pt-0 space-y-1.5">
-                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">View Details</button>
+                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">Lihat</button>
                         <button onclick="window.addToCart('${p.id}')" class="w-full bg-indigo-600 text-white text-xs font-bold py-2 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center space-x-1">
                             <i class="fas fa-cart-plus text-[10px]"></i>
-                            <span>Add To Cart</span>
+                            <span>Tambah Ke Troli</span>
                         </button>
                     </div>
                 </div>
@@ -791,14 +734,12 @@
         }
 
         function renderSellerDashboard() {
-            // Stats
             const totalSales = state.orders.filter(o => o.paymentStatus === 'PAID').reduce((sum, o) => sum + parseFloat(o.amount || 0), 0);
             document.getElementById('statTotalSales').innerText = `RM ${totalSales.toFixed(2)}`;
             document.getElementById('statTotalOrders').innerText = state.orders.length;
             document.getElementById('statPaidOrders').innerText = state.orders.filter(o => o.paymentStatus === 'PAID').length;
             document.getElementById('statTotalProducts').innerText = state.products.length;
 
-            // Seller Product Table
             const prodTable = document.getElementById('sellerProductTable');
             if (prodTable) {
                 prodTable.innerHTML = state.products.map(p => `
@@ -809,7 +750,7 @@
                         </td>
                         <td class="p-3">${p.category}</td>
                         <td class="p-3 font-bold text-indigo-600">RM ${parseFloat(p.price).toFixed(2)}</td>
-                        <td class="p-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Active</span></td>
+                        <td class="p-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Aktif</span></td>
                         <td class="p-3 text-right space-x-2">
                             <button onclick="window.editProduct('${p.id}')" class="text-indigo-600 hover:text-indigo-900"><i class="fas fa-edit"></i></button>
                             <button onclick="window.deleteProduct('${p.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
@@ -818,7 +759,6 @@
                 `).join('');
             }
 
-            // Seller Orders Table
             const orderTable = document.getElementById('sellerOrderTable');
             if (orderTable) {
                 orderTable.innerHTML = state.orders.map(o => `
@@ -834,13 +774,12 @@
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.paymentStatus === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${o.paymentStatus}</span>
                         </td>
                         <td class="p-3 text-right">
-                            <a href="${o.accessLink}" target="_blank" class="text-indigo-600 hover:underline text-[11px]"><i class="fas fa-link"></i> Link</a>
+                            <a href="${o.accessLink}" target="_blank" class="text-indigo-600 hover:underline text-[11px]"><i class="fas fa-link"></i> Link Akses</a>
                         </td>
                     </tr>
                 `).join('');
             }
 
-            // Customer DB Table
             const custTable = document.getElementById('sellerCustomerTable');
             if (custTable) {
                 const uniqueCusts = {};
@@ -862,57 +801,57 @@
             }
         }
 
-        // SELLER AUTH & ACCESS LOGIC
-        window.openSellerAuthModal = function() {
-            if (state.isSellerLoggedIn) {
-                window.navigateTo('seller');
+        // SELLER AUTHENTICATION HANDLERS
+        window.toggleAuthMode = function(mode) {
+            state.authMode = mode;
+            const btnLogin = document.getElementById('btnAuthLogin');
+            const btnSignup = document.getElementById('btnAuthSignup');
+            const extra = document.getElementById('signupExtraFields');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const title = document.getElementById('authTitle');
+
+            if (mode === 'login') {
+                btnLogin.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900';
+                btnSignup.className = 'flex-1 py-2 rounded-lg text-gray-500';
+                extra.classList.add('hidden');
+                submitBtn.innerText = 'Masuk Ke Seller Hub';
+                title.innerText = 'Seller Log In';
             } else {
-                document.getElementById('sellerAuthModal').classList.remove('hidden');
+                btnSignup.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900';
+                btnLogin.className = 'flex-1 py-2 rounded-lg text-gray-500';
+                extra.classList.remove('hidden');
+                submitBtn.innerText = 'Daftar Akaun Seller';
+                title.innerText = 'Seller Sign Up';
             }
         };
 
-        window.closeSellerAuthModal = function() {
-            document.getElementById('sellerAuthModal').classList.add('hidden');
-        };
-
-        window.handleSellerLogin = function(e) {
+        window.handleSellerAuth = function(e) {
             e.preventDefault();
-            const inputPin = document.getElementById('sellerPinInput').value;
-            if (inputPin === state.sellerPin) {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            // Simple demo validation (Dua-dua login atau signup disahkan terus)
+            if (password) {
                 state.isSellerLoggedIn = true;
-                closeSellerAuthModal();
+                showToast('Akses Seller Berjaya!');
                 window.navigateTo('seller');
-                showToast('Log masuk Seller berjaya!');
+                renderSellerDashboard();
             } else {
-                showToast('PIN tidak sah!');
+                showToast('Sila masukkan kata laluan.');
             }
         };
 
         window.logoutSeller = function() {
+            state.isSellerLoggedIn = false;
+            showToast('Log Keluar Berjaya');
             window.navigateTo('home');
         };
 
-        // COPY LINK FUNCTIONALITY FOR SELLER
         window.copyStoreLink = function() {
-            const storeUrl = window.location.href;
+            const storeUrl = window.location.origin + window.location.pathname;
             navigator.clipboard.writeText(storeUrl).then(() => {
-                showToast('Link kedai berjaya disalin! Hantar ke buyer.');
-            }).catch(err => {
-                showToast('Gagal menyalin link kedai.');
+                showToast('Link Kedai Pembeli Berjaya Disalin!');
             });
-        };
-
-        window.handleChangeSellerPin = function(e) {
-            e.preventDefault();
-            const newPin = document.getElementById('newSellerPinInput').value;
-            if (newPin.length >= 4) {
-                state.sellerPin = newPin;
-                update(ref(db, 'settings'), { sellerPin: newPin });
-                showToast('Seller PIN berjaya ditukar!');
-                document.getElementById('newSellerPinInput').value = '';
-            } else {
-                showToast('PIN sekurang-kurangnya 4 digit.');
-            }
         };
 
         // NAVIGATION & ROUTING
@@ -922,11 +861,29 @@
             document.getElementById('checkoutView').classList.add('hidden');
             document.getElementById('paymentView').classList.add('hidden');
             document.getElementById('successView').classList.add('hidden');
+            document.getElementById('sellerAuthView').classList.add('hidden');
             document.getElementById('sellerView').classList.add('hidden');
 
             if (view === 'home') document.getElementById('customerView').classList.remove('hidden');
-            if (view === 'seller') document.getElementById('sellerView').classList.remove('hidden');
+            if (view === 'sellerAuth') document.getElementById('sellerAuthView').classList.remove('hidden');
+            if (view === 'seller') {
+                if (state.isSellerLoggedIn) {
+                    document.getElementById('sellerView').classList.remove('hidden');
+                } else {
+                    document.getElementById('sellerAuthView').classList.remove('hidden');
+                }
+            }
         };
+
+        // ROUTE ROUTER UNTUK SELLER PORTAL KHAS (?portal=seller)
+        function checkUrlRoute() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('portal') === 'seller') {
+                window.navigateTo('seller');
+            } else {
+                window.navigateTo('home');
+            }
+        }
 
         window.showCustomerStore = function() {
             window.navigateTo('home');
@@ -1080,14 +1037,13 @@
             const totalAmount = state.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
-            // Store Pending Order
             state.currentOrderPending = {
                 id: orderId,
                 customerName: name,
                 customerPhone: phone,
                 customerEmail: email,
                 productName: state.cart.map(c => c.name).join(', '),
-                accessLink: state.cart[0].accessLink, // Delivery link
+                accessLink: state.cart[0].accessLink,
                 amount: totalAmount,
                 paymentStatus: 'PENDING',
                 date: new Date().toISOString()
@@ -1100,7 +1056,6 @@
             document.getElementById('paymentView').classList.remove('hidden');
         };
 
-        // SIMULATED PAYMENT WEBHOOK VERIFICATION
         window.simulatePaymentSuccess = function() {
             if (!state.currentOrderPending) return;
 
@@ -1109,23 +1064,14 @@
                 paymentStatus: 'PAID'
             };
 
-            // Push Order to Firebase Realtime Database
             const ordersRef = ref(db, 'orders');
             const newOrderRef = push(ordersRef);
             set(newOrderRef, paidOrder);
 
-            // Trigger Automatic Email Simulation
-            console.log(`[AUTOMATIC EMAIL TRIGGERED]`);
-            console.log(`TO: ${paidOrder.customerEmail}`);
-            console.log(`SUBJECT: Your Digital Product Access — ${paidOrder.productName}`);
-            console.log(`BODY: Hi ${paidOrder.customerName}, Access Link: ${paidOrder.accessLink}`);
-
-            // UI Render Success
             document.getElementById('successOrderId').innerText = paidOrder.id;
             document.getElementById('successEmail').innerText = paidOrder.customerEmail;
             document.getElementById('successAccessLinkBtn').href = paidOrder.accessLink;
 
-            // Clear Cart
             state.cart = [];
             updateCartUI();
 
@@ -1134,7 +1080,7 @@
             showToast('Pembayaran berjaya disahkan!');
         };
 
-        // SELLER ACTIONS
+        // SELLER DASHBOARD ACTIONS
         window.switchSellerTab = function(tabName) {
             document.querySelectorAll('.seller-tab').forEach(t => t.className = 'seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg');
             document.querySelectorAll('.seller-content').forEach(c => c.classList.add('hidden'));
@@ -1166,10 +1112,6 @@
                 shortDesc: document.getElementById('prodShortDesc').value,
                 fullDesc: document.getElementById('prodFullDesc').value,
                 img1: document.getElementById('prodImg1').value,
-                img2: document.getElementById('prodImg2').value,
-                img3: document.getElementById('prodImg3').value,
-                img4: document.getElementById('prodImg4').value,
-                video: document.getElementById('prodVideo').value,
                 accessLink: document.getElementById('prodAccessLink').value
             };
 
@@ -1235,7 +1177,7 @@
             const qrUrl = document.getElementById('settingQrUrl').value;
             const sellerEmail = document.getElementById('settingSellerEmail').value;
 
-            update(ref(db, 'settings'), { qrUrl, sellerEmail });
+            set(ref(db, 'settings'), { qrUrl, sellerEmail });
             showToast('Tetapan dikemaskini.');
         };
 
@@ -1248,9 +1190,9 @@
             }, 3000);
         }
 
-        // INIT APP
         window.addEventListener('DOMContentLoaded', () => {
             initDbListeners();
+            checkUrlRoute();
         });
     </script>
 </body>
