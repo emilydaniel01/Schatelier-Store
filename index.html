@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schatelier Store - Pasaran Produk Digital Pendidikan</title>
+    <title>Schatelier Store - Pasaran Produk Digital</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
@@ -20,7 +20,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
-        <i id="toast-icon" class="fas font-medium"></i>
+        <i id="toast-icon" class="fas fa-info-circle text-indigo-400"></i>
         <span id="toast-message" class="text-sm font-medium"></span>
     </div>
 
@@ -40,12 +40,12 @@
 
             <!-- Search Bar (Desktop) -->
             <div class="hidden md:flex flex-1 max-w-md relative">
-                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Cari worksheet, modul, apps..." class="w-full bg-gray-100 text-sm border-0 rounded-full py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all">
+                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Cari modul, apps, dokumen..." class="w-full bg-gray-100 text-sm border-0 rounded-full py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all">
                 <i class="fas fa-search absolute left-3.5 top-3 text-gray-400 text-sm"></i>
             </div>
 
             <!-- Actions -->
-            <div class="flex items-center space-x-2 sm:space-x-4">
+            <div class="flex items-center space-x-2 sm:space-x-3">
                 <button onclick="navigateTo('home')" class="p-2 text-gray-600 hover:text-indigo-600 rounded-lg hover:bg-gray-100 transition" title="Home">
                     <i class="fas fa-store text-lg"></i>
                 </button>
@@ -53,10 +53,26 @@
                     <i class="fas fa-shopping-bag text-lg"></i>
                     <span id="cartCount" class="absolute top-1 right-1 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                 </button>
-                <button onclick="toggleSellerPanel()" class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-indigo-600 transition flex items-center space-x-2 shadow-sm">
-                    <i class="fas fa-user-shield"></i>
-                    <span class="hidden sm:inline" id="sellerBtnText">Seller Hub</span>
-                </button>
+
+                <!-- Auth / Seller Hub Buttons -->
+                <div id="authButtons" class="flex items-center space-x-2">
+                    <button onclick="openAuthModal('login')" class="text-xs font-semibold text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-xl hover:bg-gray-100 transition">
+                        Log In
+                    </button>
+                    <button onclick="openAuthModal('signup')" class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm">
+                        Sign Up
+                    </button>
+                </div>
+
+                <div id="sellerLoggedInButtons" class="hidden flex items-center space-x-2">
+                    <button onclick="toggleSellerPanel()" class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-indigo-600 transition flex items-center space-x-2 shadow-sm">
+                        <i class="fas fa-user-shield"></i>
+                        <span class="hidden sm:inline">Seller Hub</span>
+                    </button>
+                    <button onclick="handleLogout()" class="text-xs font-semibold text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition" title="Log Out">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Mobile Search Bar -->
@@ -76,16 +92,16 @@
             <!-- HERO / BANNER -->
             <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-10 text-white mb-8 shadow-xl relative overflow-hidden">
                 <div class="relative z-10 max-w-xl">
-                    <span class="bg-white/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block backdrop-blur-md">Bahan Pendidikan Digital</span>
-                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3">Modul & Worksheet Terbaik Untuk Pelajar</h1>
-                    <p class="text-indigo-100 text-sm sm:text-base mb-6">Dapatkan akses serta-merta ke link muat turun dokumen PDF, aplikasi pembelajaran, dan templat Canva.</p>
+                    <span class="bg-white/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block backdrop-blur-md">Pasaran Digital</span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3">Kedai Produk Digital Anda</h1>
+                    <p class="text-indigo-100 text-sm sm:text-base mb-6">Dapatkan akses serta-merta ke fail digital, modul pembelajaran, dan templat eksklusif.</p>
                     <a href="#productListSection" class="bg-white text-indigo-600 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl hover:bg-indigo-50 shadow-md transition inline-flex items-center space-x-2">
                         <span>Terokai Bahan</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-[180px] pointer-events-none">
-                    <i class="fas fa-graduation-cap"></i>
+                    <i class="fas fa-store"></i>
                 </div>
             </div>
 
@@ -114,26 +130,19 @@
             </div>
         </div>
 
-        <!-- PRODUCT DETAIL PAGE (HIDDEN BY DEFAULT) -->
+        <!-- PRODUCT DETAIL PAGE -->
         <div id="productDetailView" class="hidden">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
                 <span>Kembali ke Kedai</span>
             </button>
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Media Gallery -->
                 <div>
                     <div class="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 relative shadow-inner">
                         <img id="detailMainImage" src="" alt="Product" class="w-full h-full object-cover">
-                        <video id="detailVideo" controls class="w-full h-full object-cover hidden"></video>
                         <span id="detailBadge" class="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">NEW</span>
                     </div>
-                    <!-- Thumbnails -->
-                    <div id="detailThumbnails" class="flex space-x-3 overflow-x-auto pb-2">
-                        <!-- Dynamic Media Thumbnails -->
-                    </div>
                 </div>
-                <!-- Details & Actions -->
                 <div class="flex flex-col justify-between">
                     <div>
                         <span id="detailCategory" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Kategori</span>
@@ -162,7 +171,7 @@
             </div>
         </div>
 
-        <!-- CHECKOUT PAGE (HIDDEN BY DEFAULT) -->
+        <!-- CHECKOUT PAGE -->
         <div id="checkoutView" class="hidden max-w-2xl mx-auto">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
@@ -173,20 +182,14 @@
                     <i class="fas fa-shield-alt text-indigo-600"></i>
                     <span>Maklumat Pembelian Digital</span>
                 </h2>
-                
-                <!-- Order Summary -->
                 <div class="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Ringkasan Pesanan</h3>
-                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50">
-                        <!-- Dynamic Checkout Items -->
-                    </div>
+                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50"></div>
                     <div class="border-t border-gray-200 pt-3 mt-3 flex justify-between items-center font-bold text-gray-900">
                         <span>Jumlah Keseluruhan</span>
                         <span id="checkoutTotal" class="text-indigo-600 text-lg">RM 0.00</span>
                     </div>
                 </div>
-
-                <!-- Customer Info Form -->
                 <form id="checkoutForm" onsubmit="handleProceedToPayment(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penuh *</label>
@@ -195,10 +198,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1">No. Telefon (WhatsApp) *</label>
-                            <input type="tel" id="custPhone" required pattern="^[0-9\-\+\s]{9,15}$" placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                            <input type="tel" id="custPhone" required placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email (Akses Dihantar Ke Sini) *</label>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email *</label>
                             <input type="email" id="custEmail" required placeholder="nama@email.com" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
                         </div>
                     </div>
@@ -209,78 +212,52 @@
             </div>
         </div>
 
-        <!-- PAYMENT SECTION (HIDDEN BY DEFAULT) -->
+        <!-- PAYMENT SECTION -->
         <div id="paymentView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Pembayaran Imbas QR</span>
                 <h2 class="text-xl font-bold text-gray-900 mb-2">Imbas Untuk Bayar</h2>
-                <p class="text-xs text-gray-500 mb-4">Gunakan mana-mana aplikasi DuitNow QR / E-Wallet / Online Banking</p>
-                
                 <div class="bg-indigo-50/50 p-4 rounded-2xl mb-6 inline-block">
-                    <img id="paymentQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_PAYMENT" alt="DuitNow QR" class="w-48 h-48 mx-auto rounded-xl shadow-md border-4 border-white">
+                    <img id="paymentQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_PAYMENT" alt="QR Code" class="w-48 h-48 mx-auto rounded-xl shadow-md border-4 border-white">
                 </div>
-
                 <div class="mb-6">
                     <span class="text-xs text-gray-500 block">Jumlah Perlu Dibayar</span>
                     <span id="paymentAmountText" class="text-3xl font-extrabold text-indigo-600">RM 0.00</span>
                 </div>
-
-                <div class="bg-gray-50 p-3 rounded-xl text-xs text-gray-600 text-left mb-6 space-y-1">
-                    <p class="font-semibold text-gray-800">Nota Arahan:</p>
-                    <p>1. Imbas QR di atas menggunakan Bank/E-Wallet anda.</p>
-                    <p>2. Pastikan amaun imbasan tepat seperti di atas.</p>
-                    <p>3. Sistem mengesahkan transaksi secara automatik.</p>
-                </div>
-
-                <!-- Webhook / Gateway Simulator Section -->
-                <div class="border-t border-gray-100 pt-6">
-                    <p class="text-[11px] text-gray-400 mb-3 uppercase tracking-wider font-medium">Demo & Test Gateway Simulation</p>
-                    <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Simulasi Bayaran Berjaya</span>
-                    </button>
-                </div>
+                <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center space-x-2">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Simulasi Bayaran Berjaya</span>
+                </button>
             </div>
         </div>
 
-        <!-- ORDER SUCCESS PAGE (HIDDEN BY DEFAULT) -->
+        <!-- ORDER SUCCESS PAGE -->
         <div id="successView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
                     <i class="fas fa-check"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900 mb-1">Pembayaran Berjaya!</h2>
-                <p class="text-xs text-gray-500 mb-6">Terima kasih atas pembelian bahan digital anda.</p>
-
-                <div class="bg-gray-50 rounded-2xl p-4 text-left text-xs space-y-2 mb-6 border border-gray-100">
+                <div class="bg-gray-50 rounded-2xl p-4 text-left text-xs space-y-2 mb-6 my-4 border border-gray-100">
                     <div class="flex justify-between"><span class="text-gray-500">ID Pesanan:</span><span id="successOrderId" class="font-bold">#ORD-0000</span></div>
                     <div class="flex justify-between"><span class="text-gray-500">Email:</span><span id="successEmail" class="font-bold">customer@email.com</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500">Status Produk:</span><span class="text-emerald-600 font-bold">Siap Diakses</span></div>
                 </div>
-
-                <div class="space-y-3">
-                    <a id="successAccessLinkBtn" href="#" target="_blank" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 flex items-center justify-center space-x-2">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span>AKSES PRODUK DIGITAL ANDA</span>
-                    </a>
-                    <button onclick="navigateTo('home')" class="w-full bg-gray-100 text-gray-700 font-bold text-sm py-3 rounded-xl hover:bg-gray-200 transition">
-                        Kembali Ke Kedai
-                    </button>
-                </div>
-                <p class="text-[11px] text-gray-400 mt-4">Link akses ini juga telah dihantar secara automatik ke email anda.</p>
+                <a id="successAccessLinkBtn" href="#" target="_blank" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center space-x-2">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>AKSES PRODUK DIGITAL ANDA</span>
+                </a>
             </div>
         </div>
 
-
         <!-- ==================== SELLER / ADMIN DASHBOARD VIEW ==================== -->
         <div id="sellerView" class="hidden">
-            <!-- Seller Sub Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-200 mb-6 gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
                     <p class="text-xs text-gray-500">Pengurusan Produk Digital, Kategori & Jualan</p>
                 </div>
                 <div class="flex items-center space-x-3">
+                    <!-- ACTION BUTTON: ADD PRODUCT -->
                     <button onclick="openAddProductModal()" class="bg-indigo-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center space-x-2 shadow-sm">
                         <i class="fas fa-plus"></i>
                         <span>+ Add Product</span>
@@ -297,8 +274,6 @@
                 <button onclick="switchSellerTab('products')" id="tab-products" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Produk</button>
                 <button onclick="switchSellerTab('categories')" id="tab-categories" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Kategori</button>
                 <button onclick="switchSellerTab('orders')" id="tab-orders" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Pesanan (Orders)</button>
-                <button onclick="switchSellerTab('customers')" id="tab-customers" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Pelanggan</button>
-                <button onclick="switchSellerTab('settings')" id="tab-settings" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Tetapan Kedai</button>
             </div>
 
             <!-- TAB: OVERVIEW -->
@@ -328,6 +303,9 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-gray-100 flex justify-between items-center">
                         <h3 class="font-bold text-sm text-gray-900">Senarai Produk</h3>
+                        <button onclick="openAddProductModal()" class="bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-indigo-700">
+                            + Add Product
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs text-gray-600">
@@ -336,8 +314,7 @@
                                     <th class="p-3">Produk</th>
                                     <th class="p-3">Kategori</th>
                                     <th class="p-3">Harga</th>
-                                    <th class="p-3">Status</th>
-                                    <th class="p-3 text-right">Tindakan</th>
+                                    <th class="p-3 text-right">Tindakan (Edit / Padam)</th>
                                 </tr>
                             </thead>
                             <tbody id="sellerProductTable" class="divide-y divide-gray-100">
@@ -356,11 +333,11 @@
                         <form onsubmit="handleCreateCategory(event)" class="space-y-3">
                             <div>
                                 <label class="block text-[11px] font-semibold text-gray-600 mb-1">Nama Kategori</label>
-                                <input type="text" id="catNameInput" required placeholder="Contoh: Tahun 1" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
+                                <input type="text" id="catNameInput" required placeholder="Contoh: Modul Ebook" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Icon / Gambar URL</label>
-                                <input type="url" id="catIconInput" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Icon / Simbol</label>
+                                <input type="text" id="catIconInput" placeholder="📁" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
                             </div>
                             <button type="submit" class="w-full bg-indigo-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-indigo-700 transition">Cipta Kategori</button>
                         </form>
@@ -379,7 +356,7 @@
             <!-- TAB: ORDERS -->
             <div id="seller-orders" class="seller-content hidden">
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                    <div class="p-4 border-b border-gray-100">
                         <h3 class="font-bold text-sm text-gray-900">Rekod Pesanan Pelanggan</h3>
                     </div>
                     <div class="overflow-x-auto">
@@ -391,7 +368,6 @@
                                     <th class="p-3">Produk</th>
                                     <th class="p-3">Jumlah</th>
                                     <th class="p-3">Status</th>
-                                    <th class="p-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="sellerOrderTable" class="divide-y divide-gray-100">
@@ -401,51 +377,39 @@
                     </div>
                 </div>
             </div>
-
-            <!-- TAB: CUSTOMERS -->
-            <div id="seller-customers" class="seller-content hidden">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="p-4 border-b border-gray-100">
-                        <h3 class="font-bold text-sm text-gray-900">Pangkalan Data Pelanggan</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-gray-600">
-                            <thead class="bg-gray-50 uppercase text-[10px] text-gray-400 tracking-wider">
-                                <tr>
-                                    <th class="p-3">Nama</th>
-                                    <th class="p-3">Email</th>
-                                    <th class="p-3">No Phone</th>
-                                    <th class="p-3">Jumlah Pesanan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sellerCustomerTable" class="divide-y divide-gray-100">
-                                <!-- Dynamic Customer Rows -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: SETTINGS -->
-            <div id="seller-settings" class="seller-content hidden">
-                <div class="max-w-xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Pembayaran DuitNow QR</h3>
-                    <form onsubmit="handleSaveSettings(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Gambar URL QR Code Pembayaran</label>
-                            <input type="url" id="settingQrUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Email Penerima Notifikasi Seller</label>
-                            <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                        </div>
-                        <button type="submit" class="bg-indigo-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition">Simpan Tetapan</button>
-                    </form>
-                </div>
-            </div>
         </div>
 
     </main>
+
+    <!-- MODAL: SIGN UP / LOG IN -->
+    <div id="authModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-100 mb-4">
+                <h3 class="font-bold text-lg text-gray-900" id="authModalTitle">Akaun Seller</h3>
+                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="authMode" value="login">
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Email Seller</label>
+                    <input type="email" id="authEmail" required placeholder="seller@domain.com" class="w-full border border-gray-200 rounded-xl p-2.5">
+                </div>
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Kata Laluan</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full border border-gray-200 rounded-xl p-2.5">
+                </div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition">
+                    Log Masuk
+                </button>
+            </form>
+
+            <div class="mt-4 text-center text-xs text-gray-500">
+                <span id="authToggleText">Belum ada akaun?</span>
+                <button onclick="toggleAuthMode()" id="authToggleBtn" class="text-indigo-600 font-bold hover:underline ml-1">Daftar Sign Up</button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL: ADD / EDIT PRODUCT -->
     <div id="productModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -459,7 +423,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block font-semibold text-gray-700 mb-1">Nama Produk *</label>
-                        <input type="text" id="prodName" required placeholder="Contoh: Worksheet Matematik Tahun 1" class="w-full border border-gray-200 rounded-xl p-2.5">
+                        <input type="text" id="prodName" required placeholder="Contoh: Modul Ebook PDF" class="w-full border border-gray-200 rounded-xl p-2.5">
                     </div>
                     <div>
                         <label class="block font-semibold text-gray-700 mb-1">Kategori *</label>
@@ -496,33 +460,20 @@
 
                 <div>
                     <label class="block font-semibold text-gray-700 mb-1">Full Description</label>
-                    <textarea id="prodFullDesc" rows="4" placeholder="Penerangan terperinci berkenaan bahan digital..." class="w-full border border-gray-200 rounded-xl p-2.5"></textarea>
-                </div>
-
-                <!-- Product Media -->
-                <div class="border-t border-gray-100 pt-3">
-                    <label class="block font-semibold text-gray-700 mb-1">Gambar Produk (URL Gambar Max 4)</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="url" id="prodImg1" placeholder="Gambar Utama URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg2" placeholder="Gambar 2 URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg3" placeholder="Gambar 3 URL" class="border border-gray-200 rounded-xl p-2">
-                        <input type="url" id="prodImg4" placeholder="Gambar 4 URL" class="border border-gray-200 rounded-xl p-2">
-                    </div>
+                    <textarea id="prodFullDesc" rows="3" placeholder="Penerangan terperinci produk..." class="w-full border border-gray-200 rounded-xl p-2.5"></textarea>
                 </div>
 
                 <div>
-                    <label class="block font-semibold text-gray-700 mb-1">Video Produk (URL Video / MP4)</label>
-                    <input type="url" id="prodVideo" placeholder="https://..." class="w-full border border-gray-200 rounded-xl p-2.5">
+                    <label class="block font-semibold text-gray-700 mb-1">Gambar Utama Produk (URL)</label>
+                    <input type="url" id="prodImg1" placeholder="https://..." class="w-full border border-gray-200 rounded-xl p-2.5">
                 </div>
 
-                <!-- DIGITAL PRODUCT ACCESS LINK FIELD -->
                 <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
-                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / Canva / Link File) *</label>
-                    <input type="url" id="prodAccessLink" required placeholder="https://drive.google.com/file/d/..." class="w-full border border-indigo-200 rounded-xl p-2.5 bg-white">
-                    <p class="text-[10px] text-indigo-600 mt-1">Link ini sulit dan hanya diserahkan kepada pembeli selepas pembayaran disahkan PAID.</p>
+                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / File Link) *</label>
+                    <input type="url" id="prodAccessLink" required placeholder="https://drive.google.com/..." class="w-full border border-indigo-200 rounded-xl p-2.5 bg-white">
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4">
+                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-100">
                     <button type="button" onclick="closeProductModal()" class="px-4 py-2 bg-gray-100 font-bold rounded-xl text-gray-600">Batal</button>
                     <button type="submit" class="px-5 py-2 bg-indigo-600 font-bold rounded-xl text-white hover:bg-indigo-700">Simpan Produk</button>
                 </div>
@@ -538,9 +489,7 @@
                     <h3 class="font-bold text-lg text-gray-900">Troli Belanja</h3>
                     <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
                 </div>
-                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]">
-                    <!-- Dynamic Cart Items -->
-                </div>
+                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]"></div>
             </div>
             <div class="border-t border-gray-100 pt-4">
                 <div class="flex justify-between items-center font-bold text-gray-900 mb-4">
@@ -580,33 +529,29 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // STATE APP DATA
+        // STATE DATA (EMPTY BY DEFAULT)
         let state = {
             categories: [],
             products: [],
             orders: [],
-            customers: [],
             cart: [],
             activeCategory: 'All',
             activeProductDetail: null,
             currentOrderPending: null,
-            settings: {
-                qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEFAULT_DUITNOW',
-                sellerEmail: 'admin@schatelier.com'
-            }
+            currentUser: JSON.parse(localStorage.getItem('schatelier_seller') || 'null')
         };
 
-        // INITIAL REALTIME DATABASE LISTENERS
+        // REALTIME DATABASE LISTENERS
         function initDbListeners() {
             onValue(ref(db, 'categories'), (snapshot) => {
                 const data = snapshot.val();
-                state.categories = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : getDefaultCategories();
+                state.categories = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
                 renderCategories();
             });
 
             onValue(ref(db, 'products'), (snapshot) => {
                 const data = snapshot.val();
-                state.products = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : getDefaultProducts();
+                state.products = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
                 renderProducts();
                 renderSellerDashboard();
             });
@@ -616,52 +561,60 @@
                 state.orders = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
                 renderSellerDashboard();
             });
-
-            onValue(ref(db, 'settings'), (snapshot) => {
-                const data = snapshot.val();
-                if(data) state.settings = data;
-            });
         }
 
-        function getDefaultCategories() {
-            return [
-                { id: 'cat1', name: 'Prasekolah', icon: '📁' },
-                { id: 'cat2', name: 'Tahun 1', icon: '📁' },
-                { id: 'cat3', name: 'Tahun 2', icon: '📁' },
-                { id: 'cat4', name: 'Tahun 3', icon: '📁' },
-                { id: 'cat5', name: 'Sekolah Menengah', icon: '📁' },
-                { id: 'cat6', name: 'Apps Pembelajaran', icon: '📱' },
-                { id: 'cat7', name: 'Free Worksheet', icon: '🎁' }
-            ];
-        }
+        // AUTHENTICATION LOGIC (LOCAL STORAGE BACKED)
+        window.openAuthModal = function(mode = 'login') {
+            document.getElementById('authMode').value = mode;
+            document.getElementById('authModalTitle').innerText = mode === 'login' ? 'Log Masuk Seller' : 'Daftar Akaun Seller';
+            document.getElementById('authSubmitBtn').innerText = mode === 'login' ? 'Log Masuk' : 'Daftar Akaun';
+            document.getElementById('authToggleText').innerText = mode === 'login' ? 'Belum ada akaun?' : 'Sudah ada akaun?';
+            document.getElementById('authToggleBtn').innerText = mode === 'login' ? 'Daftar Sign Up' : 'Log Masuk';
+            document.getElementById('authModal').classList.remove('hidden');
+        };
 
-        function getDefaultProducts() {
-            return [
-                {
-                    id: 'p1',
-                    name: 'Modul Asas Matematik Prasekolah PDF',
-                    category: 'Prasekolah',
-                    price: 15.00,
-                    originalPrice: 30.00,
-                    shortDesc: '30 Halaman latihan asas nombor & operasi tambah.',
-                    fullDesc: 'Modul lengkap mengandungi aktiviti bergambar untuk kanak-kanak prasekolah berumur 4-6 tahun. Mudah dicetak.',
-                    badge: 'BEST SELLER',
-                    img1: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80',
-                    accessLink: 'https://drive.google.com/file/d/demo-prasekolah/view'
-                },
-                {
-                    id: 'p2',
-                    name: 'Koleksi Worksheet Bahasa Melayu Tahun 1',
-                    category: 'Tahun 1',
-                    price: 12.00,
-                    originalPrice: 20.00,
-                    shortDesc: 'Latihan kemahiran membaca dan bina ayat.',
-                    fullDesc: 'Bahan sokongan PdPR dan pembelajaran di rumah mengikut silibus KSSR Semakan terkini.',
-                    badge: 'NEW',
-                    img1: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80',
-                    accessLink: 'https://drive.google.com/file/d/demo-tahun1/view'
-                }
-            ];
+        window.closeAuthModal = function() {
+            document.getElementById('authModal').classList.add('hidden');
+        };
+
+        window.toggleAuthMode = function() {
+            const currentMode = document.getElementById('authMode').value;
+            window.openAuthModal(currentMode === 'login' ? 'signup' : 'login');
+        };
+
+        window.handleAuthSubmit = function(e) {
+            e.preventDefault();
+            const mode = document.getElementById('authMode').value;
+            const email = document.getElementById('authEmail').value;
+
+            // Store simulated logged in session
+            state.currentUser = { email };
+            localStorage.setItem('schatelier_seller', JSON.stringify(state.currentUser));
+            
+            updateAuthUI();
+            closeAuthModal();
+            showToast(mode === 'login' ? 'Log masuk berjaya!' : 'Pendaftaran seller berjaya!');
+        };
+
+        window.handleLogout = function() {
+            state.currentUser = null;
+            localStorage.removeItem('schatelier_seller');
+            updateAuthUI();
+            navigateTo('home');
+            showToast('Log keluar berjaya.');
+        };
+
+        function updateAuthUI() {
+            const authBtns = document.getElementById('authButtons');
+            const sellerBtns = document.getElementById('sellerLoggedInButtons');
+
+            if (state.currentUser) {
+                authBtns.classList.add('hidden');
+                sellerBtns.classList.remove('hidden');
+            } else {
+                authBtns.classList.remove('hidden');
+                sellerBtns.classList.add('hidden');
+            }
         }
 
         // RENDER FUNCTIONS
@@ -671,28 +624,38 @@
             const sellerList = document.getElementById('sellerCategoryList');
 
             if (container) {
-                container.innerHTML = `
-                    <button onclick="window.filterCategory('All')" class="flex-shrink-0 px-4 py-2.5 rounded-2xl border ${state.activeCategory === 'All' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200'} font-semibold text-xs flex items-center space-x-2 transition shadow-sm">
-                        <span>📁 Semua</span>
-                    </button>
-                ` + state.categories.map(c => `
-                    <button onclick="window.filterCategory('${c.name}')" class="flex-shrink-0 px-4 py-2.5 rounded-2xl border ${state.activeCategory === c.name ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200'} font-semibold text-xs flex items-center space-x-2 transition shadow-sm">
-                        <span>${c.icon || '📁'} ${c.name}</span>
-                    </button>
-                `).join('');
+                if (state.categories.length === 0) {
+                    container.innerHTML = `<div class="text-xs text-gray-400 italic">Tiada kategori. Sila tambah di Seller Hub.</div>`;
+                } else {
+                    container.innerHTML = `
+                        <button onclick="window.filterCategory('All')" class="flex-shrink-0 px-4 py-2.5 rounded-2xl border ${state.activeCategory === 'All' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200'} font-semibold text-xs flex items-center space-x-2 transition shadow-sm">
+                            <span>📁 Semua</span>
+                        </button>
+                    ` + state.categories.map(c => `
+                        <button onclick="window.filterCategory('${c.name}')" class="flex-shrink-0 px-4 py-2.5 rounded-2xl border ${state.activeCategory === c.name ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200'} font-semibold text-xs flex items-center space-x-2 transition shadow-sm">
+                            <span>${c.icon || '📁'} ${c.name}</span>
+                        </button>
+                    `).join('');
+                }
             }
 
             if (selectOptions) {
-                selectOptions.innerHTML = state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+                selectOptions.innerHTML = state.categories.length > 0 
+                    ? state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('')
+                    : `<option value="">Tiada Kategori</option>`;
             }
 
             if (sellerList) {
-                sellerList.innerHTML = state.categories.map(c => `
-                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
-                        <span class="text-xs font-semibold text-gray-800">${c.icon || '📁'} ${c.name}</span>
-                        <button onclick="window.deleteCategory('${c.id}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button>
-                    </div>
-                `).join('');
+                if (state.categories.length === 0) {
+                    sellerList.innerHTML = `<p class="text-xs text-gray-400">Belum ada kategori ditambah.</p>`;
+                } else {
+                    sellerList.innerHTML = state.categories.map(c => `
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
+                            <span class="text-xs font-semibold text-gray-800">${c.icon || '📁'} ${c.name}</span>
+                            <button onclick="window.deleteCategory('${c.id}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `).join('');
+                }
             }
         }
 
@@ -709,7 +672,13 @@
             countText.innerText = `Memaparkan ${filtered.length} modul digital`;
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 text-xs">Tiada produk ditemui dalam kategori ini.</div>`;
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
+                        <i class="fas fa-box-open text-4xl text-gray-300 mb-3 block"></i>
+                        <p class="text-xs text-gray-400 font-medium">Tiada produk ditemui.</p>
+                        <p class="text-[11px] text-gray-400">Sila log masuk ke <b>Seller Hub</b> untuk menambah produk baru.</p>
+                    </div>
+                `;
                 return;
             }
 
@@ -717,7 +686,7 @@
                 <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
                     <div>
                         <div class="aspect-square bg-gray-100 relative overflow-hidden">
-                            <img src="${p.img1 || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <img src="${p.img1 || 'https://via.placeholder.com/300?text=Digital+Product'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                             ${p.badge && p.badge !== 'NONE' ? `<span class="absolute top-2 left-2 bg-indigo-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">${p.badge}</span>` : ''}
                         </div>
                         <div class="p-3.5">
@@ -731,10 +700,10 @@
                         </div>
                     </div>
                     <div class="p-3.5 pt-0 space-y-1.5">
-                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">View Details</button>
+                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">Lihat Butiran</button>
                         <button onclick="window.addToCart('${p.id}')" class="w-full bg-indigo-600 text-white text-xs font-bold py-2 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center space-x-1">
                             <i class="fas fa-cart-plus text-[10px]"></i>
-                            <span>Add To Cart</span>
+                            <span>Tambah Troli</span>
                         </button>
                     </div>
                 </div>
@@ -749,67 +718,54 @@
             document.getElementById('statPaidOrders').innerText = state.orders.filter(o => o.paymentStatus === 'PAID').length;
             document.getElementById('statTotalProducts').innerText = state.products.length;
 
-            // Seller Product Table
+            // Seller Product Table with Edit & Delete Buttons
             const prodTable = document.getElementById('sellerProductTable');
             if (prodTable) {
-                prodTable.innerHTML = state.products.map(p => `
-                    <tr>
-                        <td class="p-3 font-semibold text-gray-800 flex items-center space-x-2">
-                            <img src="${p.img1 || 'https://via.placeholder.com/50'}" class="w-8 h-8 rounded object-cover">
-                            <span>${p.name}</span>
-                        </td>
-                        <td class="p-3">${p.category}</td>
-                        <td class="p-3 font-bold text-indigo-600">RM ${parseFloat(p.price).toFixed(2)}</td>
-                        <td class="p-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Active</span></td>
-                        <td class="p-3 text-right space-x-2">
-                            <button onclick="window.editProduct('${p.id}')" class="text-indigo-600 hover:text-indigo-900"><i class="fas fa-edit"></i></button>
-                            <button onclick="window.deleteProduct('${p.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
+                if (state.products.length === 0) {
+                    prodTable.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-400">Belum ada produk. Klik <b>+ Add Product</b> di atas.</td></tr>`;
+                } else {
+                    prodTable.innerHTML = state.products.map(p => `
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-800 flex items-center space-x-2">
+                                <img src="${p.img1 || 'https://via.placeholder.com/50'}" class="w-8 h-8 rounded object-cover">
+                                <span>${p.name}</span>
+                            </td>
+                            <td class="p-3">${p.category}</td>
+                            <td class="p-3 font-bold text-indigo-600">RM ${parseFloat(p.price).toFixed(2)}</td>
+                            <td class="p-3 text-right space-x-2">
+                                <button onclick="window.editProduct('${p.id}')" class="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-2.5 py-1 rounded-lg text-xs font-semibold transition">
+                                    <i class="fas fa-edit mr-1"></i>Edit
+                                </button>
+                                <button onclick="window.deleteProduct('${p.id}')" class="bg-red-50 text-red-600 hover:bg-red-100 px-2.5 py-1 rounded-lg text-xs font-semibold transition">
+                                    <i class="fas fa-trash mr-1"></i>Padam
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
             }
 
             // Seller Orders Table
             const orderTable = document.getElementById('sellerOrderTable');
             if (orderTable) {
-                orderTable.innerHTML = state.orders.map(o => `
-                    <tr>
-                        <td class="p-3 font-mono font-bold text-gray-700">${o.id}</td>
-                        <td class="p-3">
-                            <div class="font-bold text-gray-800">${o.customerName}</div>
-                            <div class="text-[10px] text-gray-400">${o.customerEmail}</div>
-                        </td>
-                        <td class="p-3">${o.productName}</td>
-                        <td class="p-3 font-bold">RM ${parseFloat(o.amount).toFixed(2)}</td>
-                        <td class="p-3">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.paymentStatus === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${o.paymentStatus}</span>
-                        </td>
-                        <td class="p-3 text-right">
-                            <a href="${o.accessLink}" target="_blank" class="text-indigo-600 hover:underline text-[11px]"><i class="fas fa-link"></i> Link</a>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            // Customer DB Table
-            const custTable = document.getElementById('sellerCustomerTable');
-            if (custTable) {
-                const uniqueCusts = {};
-                state.orders.forEach(o => {
-                    if (!uniqueCusts[o.customerEmail]) {
-                        uniqueCusts[o.customerEmail] = { name: o.customerName, email: o.customerEmail, phone: o.customerPhone, count: 1 };
-                    } else {
-                        uniqueCusts[o.customerEmail].count += 1;
-                    }
-                });
-                custTable.innerHTML = Object.values(uniqueCusts).map(c => `
-                    <tr>
-                        <td class="p-3 font-bold text-gray-800">${c.name}</td>
-                        <td class="p-3">${c.email}</td>
-                        <td class="p-3">${c.phone}</td>
-                        <td class="p-3 font-bold text-indigo-600">${c.count} Pesanan</td>
-                    </tr>
-                `).join('');
+                if(state.orders.length === 0) {
+                    orderTable.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400">Belum ada rekod pesanan.</td></tr>`;
+                } else {
+                    orderTable.innerHTML = state.orders.map(o => `
+                        <tr>
+                            <td class="p-3 font-mono font-bold text-gray-700">${o.id}</td>
+                            <td class="p-3">
+                                <div class="font-bold text-gray-800">${o.customerName}</div>
+                                <div class="text-[10px] text-gray-400">${o.customerEmail}</div>
+                            </td>
+                            <td class="p-3">${o.productName}</td>
+                            <td class="p-3 font-bold">RM ${parseFloat(o.amount).toFixed(2)}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.paymentStatus === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${o.paymentStatus}</span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
             }
         }
 
@@ -823,12 +779,16 @@
             document.getElementById('sellerView').classList.add('hidden');
 
             if (view === 'home') document.getElementById('customerView').classList.remove('hidden');
-            if (view === 'seller') document.getElementById('sellerView').classList.remove('hidden');
+            if (view === 'seller') {
+                if (!state.currentUser) {
+                    openAuthModal('login');
+                    return;
+                }
+                document.getElementById('sellerView').classList.remove('hidden');
+            }
         };
 
-        window.showCustomerStore = function() {
-            window.navigateTo('home');
-        };
+        window.showCustomerStore = function() { window.navigateTo('home'); };
 
         window.toggleSellerPanel = function() {
             const isSellerVisible = !document.getElementById('sellerView').classList.contains('hidden');
@@ -850,11 +810,14 @@
             const q = query.toLowerCase();
             const filtered = state.products.filter(p => 
                 p.name.toLowerCase().includes(q) || 
-                p.category.toLowerCase().includes(q) || 
-                p.shortDesc.toLowerCase().includes(q)
+                p.category.toLowerCase().includes(q)
             );
             const container = document.getElementById('productGrid');
             if(container) {
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-gray-400">Tiada carian ditemui.</div>`;
+                    return;
+                }
                 container.innerHTML = filtered.map(p => `
                     <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm p-3.5 flex flex-col justify-between">
                         <div>
@@ -987,27 +950,24 @@
             const totalAmount = state.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
-            // Store Pending Order
             state.currentOrderPending = {
                 id: orderId,
                 customerName: name,
                 customerPhone: phone,
                 customerEmail: email,
                 productName: state.cart.map(c => c.name).join(', '),
-                accessLink: state.cart[0].accessLink, // Delivery link
+                accessLink: state.cart[0].accessLink,
                 amount: totalAmount,
                 paymentStatus: 'PENDING',
                 date: new Date().toISOString()
             };
 
             document.getElementById('paymentAmountText').innerText = `RM ${totalAmount.toFixed(2)}`;
-            if(state.settings.qrUrl) document.getElementById('paymentQrImg').src = state.settings.qrUrl;
 
             window.navigateTo('payment');
             document.getElementById('paymentView').classList.remove('hidden');
         };
 
-        // SIMULATED PAYMENT WEBHOOK VERIFICATION
         window.simulatePaymentSuccess = function() {
             if (!state.currentOrderPending) return;
 
@@ -1016,23 +976,14 @@
                 paymentStatus: 'PAID'
             };
 
-            // Push Order to Firebase Realtime Database
             const ordersRef = ref(db, 'orders');
             const newOrderRef = push(ordersRef);
             set(newOrderRef, paidOrder);
 
-            // Trigger Automatic Email Simulation
-            console.log(`[AUTOMATIC EMAIL TRIGGERED]`);
-            console.log(`TO: ${paidOrder.customerEmail}`);
-            console.log(`SUBJECT: Your Digital Product Access — ${paidOrder.productName}`);
-            console.log(`BODY: Hi ${paidOrder.customerName}, Access Link: ${paidOrder.accessLink}`);
-
-            // UI Render Success
             document.getElementById('successOrderId').innerText = paidOrder.id;
             document.getElementById('successEmail').innerText = paidOrder.customerEmail;
             document.getElementById('successAccessLinkBtn').href = paidOrder.accessLink;
 
-            // Clear Cart
             state.cart = [];
             updateCartUI();
 
@@ -1073,10 +1024,6 @@
                 shortDesc: document.getElementById('prodShortDesc').value,
                 fullDesc: document.getElementById('prodFullDesc').value,
                 img1: document.getElementById('prodImg1').value,
-                img2: document.getElementById('prodImg2').value,
-                img3: document.getElementById('prodImg3').value,
-                img4: document.getElementById('prodImg4').value,
-                video: document.getElementById('prodVideo').value,
                 accessLink: document.getElementById('prodAccessLink').value
             };
 
@@ -1086,7 +1033,7 @@
             } else {
                 const newRef = push(ref(db, 'products'));
                 set(newRef, prodData);
-                showToast('Produk digital baru diterbitkan!');
+                showToast('Produk digital baru ditambah!');
             }
 
             closeProductModal();
@@ -1114,7 +1061,7 @@
         window.deleteProduct = function(prodId) {
             if (confirm('Adakah anda pasti mahu memadam produk ini?')) {
                 remove(ref(db, `products/${prodId}`));
-                showToast('Produk dipadam.');
+                showToast('Produk berjaya dipadam.');
             }
         };
 
@@ -1133,17 +1080,8 @@
         window.deleteCategory = function(catId) {
             if (confirm('Padam kategori ini?')) {
                 remove(ref(db, `categories/${catId}`));
-                showToast('Kategori dipadam.');
+                showToast('Kategori berjaya dipadam.');
             }
-        };
-
-        window.handleSaveSettings = function(e) {
-            e.preventDefault();
-            const qrUrl = document.getElementById('settingQrUrl').value;
-            const sellerEmail = document.getElementById('settingSellerEmail').value;
-
-            set(ref(db, 'settings'), { qrUrl, sellerEmail });
-            showToast('Tetapan dikemaskini.');
         };
 
         function showToast(msg) {
@@ -1157,6 +1095,7 @@
 
         // INIT APP
         window.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
             initDbListeners();
         });
     </script>
