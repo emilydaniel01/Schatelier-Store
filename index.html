@@ -20,7 +20,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
-        <i id="toast-icon" class="fas fa-info-circle font-medium text-indigo-400"></i>
+        <i id="toast-icon" class="fas fa-info-circle font-medium"></i>
         <span id="toast-message" class="text-sm font-medium"></span>
     </div>
 
@@ -44,7 +44,7 @@
                 <i class="fas fa-search absolute left-3.5 top-3 text-gray-400 text-sm"></i>
             </div>
 
-            <!-- Actions (HANYA CART & HOME UNTUK PEMBELI) -->
+            <!-- Actions -->
             <div class="flex items-center space-x-2 sm:space-x-4">
                 <button onclick="navigateTo('home')" class="p-2 text-gray-600 hover:text-indigo-600 rounded-lg hover:bg-gray-100 transition" title="Home">
                     <i class="fas fa-store text-lg"></i>
@@ -52,6 +52,10 @@
                 <button onclick="openCartModal()" class="p-2 text-gray-600 hover:text-indigo-600 rounded-lg hover:bg-gray-100 transition relative" title="Cart">
                     <i class="fas fa-shopping-bag text-lg"></i>
                     <span id="cartCount" class="absolute top-1 right-1 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="toggleSellerPanel()" class="bg-gray-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-indigo-600 transition flex items-center space-x-2 shadow-sm">
+                    <i class="fas fa-user-shield"></i>
+                    <span class="hidden sm:inline" id="sellerBtnText">Seller Hub</span>
                 </button>
             </div>
         </div>
@@ -110,19 +114,21 @@
             </div>
         </div>
 
-        <!-- PRODUCT DETAIL PAGE -->
+        <!-- PRODUCT DETAIL PAGE (HIDDEN BY DEFAULT) -->
         <div id="productDetailView" class="hidden">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
                 <span>Kembali ke Kedai</span>
             </button>
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Media Gallery -->
                 <div>
                     <div class="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 relative shadow-inner">
                         <img id="detailMainImage" src="" alt="Product" class="w-full h-full object-cover">
                         <span id="detailBadge" class="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">NEW</span>
                     </div>
                 </div>
+                <!-- Details & Actions -->
                 <div class="flex flex-col justify-between">
                     <div>
                         <span id="detailCategory" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Kategori</span>
@@ -151,7 +157,7 @@
             </div>
         </div>
 
-        <!-- CHECKOUT PAGE -->
+        <!-- CHECKOUT PAGE (HIDDEN BY DEFAULT) -->
         <div id="checkoutView" class="hidden max-w-2xl mx-auto">
             <button onclick="showCustomerStore()" class="mb-6 text-sm font-medium text-gray-600 hover:text-indigo-600 flex items-center space-x-2">
                 <i class="fas fa-arrow-left"></i>
@@ -160,33 +166,105 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center space-x-2">
                     <i class="fas fa-shield-alt text-indigo-600"></i>
-                    <span>Maklumat Pembelian Digital</span>
+                    <span>Maklumat Pembelian & Pembayaran</span>
                 </h2>
                 
+                <!-- Order Summary -->
                 <div class="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Ringkasan Pesanan</h3>
-                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50"></div>
+                    <div id="checkoutItems" class="space-y-3 divide-y divide-gray-200/50">
+                        <!-- Dynamic Checkout Items -->
+                    </div>
                     <div class="border-t border-gray-200 pt-3 mt-3 flex justify-between items-center font-bold text-gray-900">
                         <span>Jumlah Keseluruhan</span>
                         <span id="checkoutTotal" class="text-indigo-600 text-lg">RM 0.00</span>
                     </div>
                 </div>
 
-                <form id="checkoutForm" onsubmit="handleProceedToPayment(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penuh *</label>
-                        <input type="text" id="custName" required placeholder="Contoh: Ahmad Albab" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Customer Info Form -->
+                <form id="checkoutForm" onsubmit="handleProceedToPayment(event)" class="space-y-6">
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider">1. Maklumat Pembeli</h3>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">No. Telefon (WhatsApp) *</label>
-                            <input type="tel" id="custPhone" required pattern="^[0-9\-\+\s]{9,15}$" placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penuh *</label>
+                            <input type="text" id="custName" required placeholder="Contoh: Ahmad Albab" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email *</label>
-                            <input type="email" id="custEmail" required placeholder="nama@email.com" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 border">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">No. Telefon (WhatsApp) *</label>
+                                <input type="tel" id="custPhone" required pattern="^[0-9\-\+\s]{9,15}$" placeholder="0123456789" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email (Akses Dihantar Ke Sini) *</label>
+                                <input type="email" id="custEmail" required placeholder="nama@email.com" class="w-full text-sm border-gray-200 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-indigo-500 border">
+                            </div>
                         </div>
                     </div>
+
+                    <!-- PAYMENT METHOD SELECTION FOR BUYER -->
+                    <div class="space-y-4 border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider">2. Pilih Kaedah Pembayaran</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Option 1: Bank Transfer -->
+                            <label class="relative border-2 rounded-2xl p-4 flex flex-col justify-between cursor-pointer transition focus-within:ring-2 focus-within:ring-indigo-500" id="labelOptBank">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <input type="radio" name="paymentOption" value="bank" checked onchange="toggleCheckoutPaymentMethod('bank')" class="text-indigo-600 focus:ring-indigo-500">
+                                    <div class="font-bold text-sm text-gray-900">Option 1: Akaun Bank</div>
+                                </div>
+                                <p class="text-[11px] text-gray-500 pl-6">Pindahan terus melalui Perbankan Dalam Talian (Online Banking Malaysia).</p>
+                            </label>
+
+                            <!-- Option 2: QR Code Scan -->
+                            <label class="relative border-2 rounded-2xl p-4 flex flex-col justify-between cursor-pointer transition focus-within:ring-2 focus-within:ring-indigo-500" id="labelOptQr">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <input type="radio" name="paymentOption" value="qr" onchange="toggleCheckoutPaymentMethod('qr')" class="text-indigo-600 focus:ring-indigo-500">
+                                    <div class="font-bold text-sm text-gray-900">Option 2: Imbas QR Code</div>
+                                </div>
+                                <p class="text-[11px] text-gray-500 pl-6">Bayar mudah menggunakan QR DuitNow / TNG / Aeon Bank.</p>
+                            </label>
+                        </div>
+
+                        <!-- SUB-DETAILS: OPTION 1 (BANK SELECTION) -->
+                        <div id="checkoutBankSection" class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 space-y-3">
+                            <label class="block text-xs font-semibold text-gray-800">Pilih Bank Anda (Semua Bank di Malaysia) *</label>
+                            <select id="buyerSelectedBank" required class="w-full text-xs border border-gray-200 rounded-xl p-3 bg-white focus:ring-2 focus:ring-indigo-500">
+                                <option value="">-- Pilih Bank --</option>
+                                <option value="Maybank">Malayan Banking Berhad (Maybank / Maybank2u)</option>
+                                <option value="CIMB Bank">CIMB Bank Berhad (CIMB Clicks)</option>
+                                <option value="Bank Islam">Bank Islam Malaysia Berhad</option>
+                                <option value="RHB Bank">RHB Bank Berhad</option>
+                                <option value="Public Bank">Public Bank Berhad</option>
+                                <option value="Hong Leong Bank">Hong Leong Bank Berhad</option>
+                                <option value="AmBank">AmBank (M) Berhad</option>
+                                <option value="Bank Muamalat">Bank Muamalat Malaysia Berhad</option>
+                                <option value="BSN">Bank Simpanan Nasional (BSN)</option>
+                                <option value="Alliance Bank">Alliance Bank Malaysia Berhad</option>
+                                <option value="Affin Bank">Affin Bank Berhad</option>
+                                <option value="HSBC Bank">HSBC Bank Malaysia Berhad</option>
+                                <option value="Standard Chartered">Standard Chartered Bank Malaysia</option>
+                                <option value="UOB Bank">United Overseas Bank (UOB Malaysia)</option>
+                                <option value="OCBC Bank">OCBC Bank Malaysia Berhad</option>
+                                <option value="Agrobank">Bank Pertanian Malaysia Berhad (Agrobank)</option>
+                                <option value="Bank Rakyat">Bank Kerjasama Rakyat Malaysia Berhad (Bank Rakyat)</option>
+                                <option value="Aeon Bank">Aeon Bank Malaysia Berhad</option>
+                                <option value="Kuwait Finance House">Kuwait Finance House (Malaysia) Berhad</option>
+                                <option value="MBSB Bank">MBSB Bank Berhad</option>
+                                <option value="Al-Rajhi Bank">Al Rajhi Banking & Investment Corporation</option>
+                            </select>
+                        </div>
+
+                        <!-- SUB-DETAILS: OPTION 2 (QR TYPE SELECTION) -->
+                        <div id="checkoutQrSection" class="hidden bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 space-y-3">
+                            <label class="block text-xs font-semibold text-gray-800">Pilih Pilihan QR Code *</label>
+                            <select id="buyerSelectedQrType" class="w-full text-xs border border-gray-200 rounded-xl p-3 bg-white focus:ring-2 focus:ring-indigo-500">
+                                <option value="qrBank">QR Bank (DuitNow QR)</option>
+                                <option value="qrTng">QR Touch N Go (TNG eWallet)</option>
+                                <option value="qrAeon">QR Aeon Bank</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 mt-6">
                         Teruskan Ke Pembayaran
                     </button>
@@ -194,15 +272,11 @@
             </div>
         </div>
 
-        <!-- PAYMENT SECTION -->
+        <!-- PAYMENT SECTION (HIDDEN BY DEFAULT) -->
         <div id="paymentView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
-                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Pembayaran Imbas QR</span>
-                <h2 class="text-xl font-bold text-gray-900 mb-2">Imbas Untuk Bayar</h2>
-                <p class="text-xs text-gray-500 mb-4">Gunakan mana-mana aplikasi DuitNow QR / E-Wallet / Online Banking</p>
-                
-                <div class="bg-indigo-50/50 p-4 rounded-2xl mb-6 inline-block">
-                    <img id="paymentQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_PAYMENT" alt="DuitNow QR" class="w-48 h-48 mx-auto rounded-xl shadow-md border-4 border-white">
+                <div id="paymentDisplayArea">
+                    <!-- Dynamic Payment Screen (Either Bank Details or QR Display) -->
                 </div>
 
                 <div class="mb-6">
@@ -210,14 +284,18 @@
                     <span id="paymentAmountText" class="text-3xl font-extrabold text-indigo-600">RM 0.00</span>
                 </div>
 
-                <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Simulasi Bayaran Berjaya</span>
-                </button>
+                <!-- Webhook / Gateway Simulator Section -->
+                <div class="border-t border-gray-100 pt-6">
+                    <p class="text-[11px] text-gray-400 mb-3 uppercase tracking-wider font-medium">Demo & Test Gateway Simulation</p>
+                    <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Simulasi Bayaran Berjaya</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- ORDER SUCCESS PAGE -->
+        <!-- ORDER SUCCESS PAGE (HIDDEN BY DEFAULT) -->
         <div id="successView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce">
@@ -241,71 +319,26 @@
                         Kembali Ke Kedai
                     </button>
                 </div>
-            </div>
-        </div>
-
-
-        <!-- ==================== SELLER LOGIN / SIGNUP PORTAL ==================== -->
-        <div id="sellerAuthView" class="hidden max-w-md mx-auto py-12">
-            <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-xl text-center">
-                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-1" id="authTitle">Seller Log In</h2>
-                <p class="text-xs text-gray-500 mb-6">Akses portal pengurusan kedai & jualan</p>
-
-                <!-- TAB SWITCH SIGNUP / LOGIN -->
-                <div class="flex bg-gray-100 p-1 rounded-xl mb-6 text-xs font-semibold">
-                    <button type="button" onclick="toggleAuthMode('login')" id="btnAuthLogin" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900">Log In</button>
-                    <button type="button" onclick="toggleAuthMode('signup')" id="btnAuthSignup" class="flex-1 py-2 rounded-lg text-gray-500">Sign Up</button>
-                </div>
-
-                <form id="sellerAuthForm" onsubmit="handleSellerAuth(event)" class="space-y-4 text-left">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Email Seller</label>
-                        <input type="email" id="authEmail" required placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-xl p-3">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Kata Laluan / PIN Akses</label>
-                        <input type="password" id="authPassword" required placeholder="••••••••" class="w-full text-xs border border-gray-200 rounded-xl p-3">
-                    </div>
-                    <div id="signupExtraFields" class="hidden space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Kedai / Penjual</label>
-                            <input type="text" id="authStoreName" placeholder="Schatelier Store" class="w-full text-xs border border-gray-200 rounded-xl p-3">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-xs py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 mt-2" id="authSubmitBtn">
-                        Masuk Ke Seller Hub
-                    </button>
-                </form>
-
-                <button onclick="navigateTo('home')" class="mt-6 text-xs text-gray-400 hover:text-gray-600 block w-full text-center">
-                    ← Kembali ke Kedai Pembeli
-                </button>
+                <p class="text-[11px] text-gray-400 mt-4">Link akses ini juga telah dihantar secara automatik ke email anda.</p>
             </div>
         </div>
 
 
         <!-- ==================== SELLER / ADMIN DASHBOARD VIEW ==================== -->
         <div id="sellerView" class="hidden">
+            <!-- Seller Sub Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-200 mb-6 gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
-                    <p class="text-xs text-gray-500">Pengurusan Produk Digital, Kategori & Jualan</p>
+                    <p class="text-xs text-gray-500">Pengurusan Produk Digital, Kewangan & Jualan</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <button onclick="copyStoreLink()" class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-emerald-100 transition flex items-center space-x-2">
-                        <i class="fas fa-copy"></i>
-                        <span>Copy Store Link (Buyer)</span>
-                    </button>
                     <button onclick="openAddProductModal()" class="bg-indigo-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center space-x-2 shadow-sm">
                         <i class="fas fa-plus"></i>
                         <span>+ Add Product</span>
                     </button>
-                    <button onclick="logoutSeller()" class="bg-red-50 text-red-600 text-xs font-bold px-3 py-2.5 rounded-xl hover:bg-red-100 transition" title="Log Out Seller">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <button onclick="toggleSellerPanel()" class="bg-gray-100 text-gray-700 text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-gray-200 transition">
+                        Lihat Kedai
                     </button>
                 </div>
             </div>
@@ -317,6 +350,7 @@
                 <button onclick="switchSellerTab('categories')" id="tab-categories" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Kategori</button>
                 <button onclick="switchSellerTab('orders')" id="tab-orders" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Pesanan (Orders)</button>
                 <button onclick="switchSellerTab('customers')" id="tab-customers" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Pelanggan</button>
+                <button onclick="switchSellerTab('finance')" id="tab-finance" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Kewangan (Finance)</button>
                 <button onclick="switchSellerTab('settings')" id="tab-settings" class="seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg">Tetapan Kedai</button>
             </div>
 
@@ -359,7 +393,9 @@
                                     <th class="p-3 text-right">Tindakan</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerProductTable" class="divide-y divide-gray-100"></tbody>
+                            <tbody id="sellerProductTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic Seller Product Rows -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -386,7 +422,9 @@
                         <div class="p-4 border-b border-gray-100">
                             <h3 class="font-bold text-sm text-gray-900">Senarai Kategori Sedia Ada</h3>
                         </div>
-                        <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3" id="sellerCategoryList"></div>
+                        <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3" id="sellerCategoryList">
+                            <!-- Dynamic Categories Admin List -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -409,7 +447,9 @@
                                     <th class="p-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerOrderTable" class="divide-y divide-gray-100"></tbody>
+                            <tbody id="sellerOrderTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic Order Rows -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -431,21 +471,105 @@
                                     <th class="p-3">Jumlah Pesanan</th>
                                 </tr>
                             </thead>
-                            <tbody id="sellerCustomerTable" class="divide-y divide-gray-100"></tbody>
+                            <tbody id="sellerCustomerTable" class="divide-y divide-gray-100">
+                                <!-- Dynamic Customer Rows -->
+                            </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <!-- TAB: FINANCE (BARU: TETAPAN FINANCE SELLER) -->
+            <div id="seller-finance" class="seller-content hidden">
+                <div class="max-w-3xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-base text-gray-900 mb-1">Tetapan Kewangan & Pembayaran Seller</h3>
+                    <p class="text-xs text-gray-500 mb-6">Isi maklumat akaun bank atau muat naik QR Code anda untuk menerima pembayaran daripada pembeli.</p>
+                    
+                    <form onsubmit="handleSaveFinanceSettings(event)" class="space-y-6">
+                        
+                        <!-- OPTION 1: BANK ACCOUNT DETAILS -->
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200/80 space-y-4">
+                            <div class="flex items-center space-x-2 border-b border-gray-200 pb-3">
+                                <i class="fas font-bold text-indigo-600 fa-university"></i>
+                                <h4 class="font-bold text-sm text-gray-800">Option 1: Maklumat Akaun Bank</h4>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penuh Seller (Mengikut Akaun Bank) *</label>
+                                <input type="text" id="finBankHolder" placeholder="Contoh: AHMAD BIN ABDULLAH" class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Bank *</label>
+                                    <select id="finBankName" class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                                        <option value="">-- Pilih Bank Malaysia --</option>
+                                        <option value="Maybank">Malayan Banking Berhad (Maybank)</option>
+                                        <option value="CIMB Bank">CIMB Bank Berhad</option>
+                                        <option value="Bank Islam">Bank Islam Malaysia Berhad</option>
+                                        <option value="RHB Bank">RHB Bank Berhad</option>
+                                        <option value="Public Bank">Public Bank Berhad</option>
+                                        <option value="Hong Leong Bank">Hong Leong Bank Berhad</option>
+                                        <option value="AmBank">AmBank (M) Berhad</option>
+                                        <option value="Bank Muamalat">Bank Muamalat Malaysia Berhad</option>
+                                        <option value="BSN">Bank Simpanan Nasional (BSN)</option>
+                                        <option value="Alliance Bank">Alliance Bank Malaysia Berhad</option>
+                                        <option value="Affin Bank">Affin Bank Berhad</option>
+                                        <option value="HSBC Bank">HSBC Bank Malaysia Berhad</option>
+                                        <option value="Standard Chartered">Standard Chartered Bank Malaysia</option>
+                                        <option value="UOB Bank">United Overseas Bank (UOB Malaysia)</option>
+                                        <option value="OCBC Bank">OCBC Bank Malaysia Berhad</option>
+                                        <option value="Agrobank">Bank Pertanian Malaysia Berhad (Agrobank)</option>
+                                        <option value="Bank Rakyat">Bank Kerjasama Rakyat Malaysia Berhad (Bank Rakyat)</option>
+                                        <option value="Aeon Bank">Aeon Bank Malaysia Berhad</option>
+                                        <option value="Kuwait Finance House">Kuwait Finance House</option>
+                                        <option value="MBSB Bank">MBSB Bank Berhad</option>
+                                        <option value="Al-Rajhi Bank">Al Rajhi Banking & Investment Corporation</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nombor Akaun Bank *</label>
+                                    <input type="text" id="finBankAccount" placeholder="1234567890" class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- OPTION 2: QR CODES -->
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200/80 space-y-4">
+                            <div class="flex items-center space-x-2 border-b border-gray-200 pb-3">
+                                <i class="fas font-bold text-indigo-600 fa-qrcode"></i>
+                                <h4 class="font-bold text-sm text-gray-800">Option 2: Tetapan QR Code Seller</h4>
+                            </div>
+                            <p class="text-[11px] text-gray-500">Masukkan URL imej bagi pilihan QR code kedai anda.</p>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">1. Gambar URL QR Bank / DuitNow QR</label>
+                                    <input type="url" id="finQrBankUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">2. Gambar URL QR Touch N Go (TNG eWallet)</label>
+                                    <input type="url" id="finQrTngUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">3. Gambar URL QR Aeon Bank</label>
+                                    <input type="url" id="finQrAeonUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-xl p-2.5 bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="bg-indigo-600 text-white font-bold text-xs px-6 py-3 rounded-xl hover:bg-indigo-700 transition shadow-md shadow-indigo-100">
+                            Simpan Tetapan Kewangan
+                        </button>
+                    </form>
                 </div>
             </div>
 
             <!-- TAB: SETTINGS -->
             <div id="seller-settings" class="seller-content hidden">
                 <div class="max-w-xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Pembayaran DuitNow QR</h3>
+                    <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Kedai</h3>
                     <form onsubmit="handleSaveSettings(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Gambar URL QR Code Pembayaran</label>
-                            <input type="url" id="settingQrUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
-                        </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Email Penerima Notifikasi Seller</label>
                             <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
@@ -474,7 +598,9 @@
                     </div>
                     <div>
                         <label class="block font-semibold text-gray-700 mb-1">Kategori *</label>
-                        <select id="prodCategory" required class="w-full border border-gray-200 rounded-xl p-2.5 bg-white"></select>
+                        <select id="prodCategory" required class="w-full border border-gray-200 rounded-xl p-2.5 bg-white">
+                            <!-- Dynamic Categories Option -->
+                        </select>
                     </div>
                 </div>
 
@@ -508,15 +634,22 @@
                     <textarea id="prodFullDesc" rows="4" placeholder="Penerangan terperinci berkenaan bahan digital..." class="w-full border border-gray-200 rounded-xl p-2.5"></textarea>
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-1">Gambar Utama Produk (URL)</label>
-                    <input type="url" id="prodImg1" placeholder="https://..." class="w-full border border-gray-200 rounded-xl p-2.5">
+                <!-- Product Media -->
+                <div class="border-t border-gray-100 pt-3">
+                    <label class="block font-semibold text-gray-700 mb-1">Gambar Produk (URL Gambar Max 4)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="url" id="prodImg1" placeholder="Gambar Utama URL" class="border border-gray-200 rounded-xl p-2">
+                        <input type="url" id="prodImg2" placeholder="Gambar 2 URL" class="border border-gray-200 rounded-xl p-2">
+                        <input type="url" id="prodImg3" placeholder="Gambar 3 URL" class="border border-gray-200 rounded-xl p-2">
+                        <input type="url" id="prodImg4" placeholder="Gambar 4 URL" class="border border-gray-200 rounded-xl p-2">
+                    </div>
                 </div>
 
+                <!-- DIGITAL PRODUCT ACCESS LINK FIELD -->
                 <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
-                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / Canva / File Link) *</label>
+                    <label class="block font-bold text-indigo-900 mb-1">Product Access Link (Google Drive / Canva / Link File) *</label>
                     <input type="url" id="prodAccessLink" required placeholder="https://drive.google.com/file/d/..." class="w-full border border-indigo-200 rounded-xl p-2.5 bg-white">
-                    <p class="text-[10px] text-indigo-600 mt-1">Link ini diserahkan automatik kepada pembeli selepas bayaran disahkan.</p>
+                    <p class="text-[10px] text-indigo-600 mt-1">Link ini sulit dan hanya diserahkan kepada pembeli selepas pembayaran disahkan PAID.</p>
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4">
@@ -535,7 +668,9 @@
                     <h3 class="font-bold text-lg text-gray-900">Troli Belanja</h3>
                     <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
                 </div>
-                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]"></div>
+                <div id="cartItemsList" class="space-y-4 overflow-y-auto max-h-[65vh]">
+                    <!-- Dynamic Cart Items -->
+                </div>
             </div>
             <div class="border-t border-gray-100 pt-4">
                 <div class="flex justify-between items-center font-bold text-gray-900 mb-4">
@@ -561,6 +696,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyAD_r5DSnRUTmyBNnxd9guzwG9zv3HRhvg",
             authDomain: "schatelierstore.firebaseapp.com",
@@ -574,22 +710,30 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // STATE APP DATA
         let state = {
             categories: [],
             products: [],
             orders: [],
+            customers: [],
             cart: [],
             activeCategory: 'All',
             activeProductDetail: null,
             currentOrderPending: null,
-            isSellerLoggedIn: false,
-            authMode: 'login',
             settings: {
-                qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEFAULT_DUITNOW',
                 sellerEmail: 'admin@schatelier.com'
+            },
+            finance: {
+                bankHolder: 'SCHATELIER ENTERPRISE',
+                bankName: 'Maybank',
+                bankAccount: '564123998871',
+                qrBankUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_BANK_DUITNOW',
+                qrTngUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_TNG',
+                qrAeonUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_AEON'
             }
         };
 
+        // INITIAL REALTIME DATABASE LISTENERS
         function initDbListeners() {
             onValue(ref(db, 'categories'), (snapshot) => {
                 const data = snapshot.val();
@@ -601,13 +745,21 @@
                 const data = snapshot.val();
                 state.products = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : getDefaultProducts();
                 renderProducts();
-                if(state.isSellerLoggedIn) renderSellerDashboard();
+                renderSellerDashboard();
             });
 
             onValue(ref(db, 'orders'), (snapshot) => {
                 const data = snapshot.val();
                 state.orders = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
-                if(state.isSellerLoggedIn) renderSellerDashboard();
+                renderSellerDashboard();
+            });
+
+            onValue(ref(db, 'finance'), (snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    state.finance = { ...state.finance, ...data };
+                    populateFinanceFields();
+                }
             });
 
             onValue(ref(db, 'settings'), (snapshot) => {
@@ -637,7 +789,7 @@
                     price: 15.00,
                     originalPrice: 30.00,
                     shortDesc: '30 Halaman latihan asas nombor & operasi tambah.',
-                    fullDesc: 'Modul lengkap mengandungi aktiviti bergambar untuk kanak-kanak prasekolah berumur 4-6 tahun.',
+                    fullDesc: 'Modul lengkap mengandungi aktiviti bergambar untuk kanak-kanak prasekolah berumur 4-6 tahun. Mudah dicetak.',
                     badge: 'BEST SELLER',
                     img1: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80',
                     accessLink: 'https://drive.google.com/file/d/demo-prasekolah/view'
@@ -657,6 +809,17 @@
             ];
         }
 
+        function populateFinanceFields() {
+            const f = state.finance;
+            if(document.getElementById('finBankHolder')) document.getElementById('finBankHolder').value = f.bankHolder || '';
+            if(document.getElementById('finBankName')) document.getElementById('finBankName').value = f.bankName || '';
+            if(document.getElementById('finBankAccount')) document.getElementById('finBankAccount').value = f.bankAccount || '';
+            if(document.getElementById('finQrBankUrl')) document.getElementById('finQrBankUrl').value = f.qrBankUrl || '';
+            if(document.getElementById('finQrTngUrl')) document.getElementById('finQrTngUrl').value = f.qrTngUrl || '';
+            if(document.getElementById('finQrAeonUrl')) document.getElementById('finQrAeonUrl').value = f.qrAeonUrl || '';
+        }
+
+        // RENDER FUNCTIONS
         function renderCategories() {
             const container = document.getElementById('categoryGrid');
             const selectOptions = document.getElementById('prodCategory');
@@ -723,10 +886,10 @@
                         </div>
                     </div>
                     <div class="p-3.5 pt-0 space-y-1.5">
-                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">Lihat</button>
+                        <button onclick="window.showProductDetail('${p.id}')" class="w-full bg-gray-100 text-gray-700 text-xs font-bold py-2 rounded-xl hover:bg-gray-200 transition">View Details</button>
                         <button onclick="window.addToCart('${p.id}')" class="w-full bg-indigo-600 text-white text-xs font-bold py-2 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center space-x-1">
                             <i class="fas fa-cart-plus text-[10px]"></i>
-                            <span>Tambah Ke Troli</span>
+                            <span>Add To Cart</span>
                         </button>
                     </div>
                 </div>
@@ -734,12 +897,14 @@
         }
 
         function renderSellerDashboard() {
+            // Stats
             const totalSales = state.orders.filter(o => o.paymentStatus === 'PAID').reduce((sum, o) => sum + parseFloat(o.amount || 0), 0);
             document.getElementById('statTotalSales').innerText = `RM ${totalSales.toFixed(2)}`;
             document.getElementById('statTotalOrders').innerText = state.orders.length;
             document.getElementById('statPaidOrders').innerText = state.orders.filter(o => o.paymentStatus === 'PAID').length;
             document.getElementById('statTotalProducts').innerText = state.products.length;
 
+            // Seller Product Table
             const prodTable = document.getElementById('sellerProductTable');
             if (prodTable) {
                 prodTable.innerHTML = state.products.map(p => `
@@ -750,7 +915,7 @@
                         </td>
                         <td class="p-3">${p.category}</td>
                         <td class="p-3 font-bold text-indigo-600">RM ${parseFloat(p.price).toFixed(2)}</td>
-                        <td class="p-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Aktif</span></td>
+                        <td class="p-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Active</span></td>
                         <td class="p-3 text-right space-x-2">
                             <button onclick="window.editProduct('${p.id}')" class="text-indigo-600 hover:text-indigo-900"><i class="fas fa-edit"></i></button>
                             <button onclick="window.deleteProduct('${p.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
@@ -759,6 +924,7 @@
                 `).join('');
             }
 
+            // Seller Orders Table
             const orderTable = document.getElementById('sellerOrderTable');
             if (orderTable) {
                 orderTable.innerHTML = state.orders.map(o => `
@@ -774,12 +940,13 @@
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.paymentStatus === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${o.paymentStatus}</span>
                         </td>
                         <td class="p-3 text-right">
-                            <a href="${o.accessLink}" target="_blank" class="text-indigo-600 hover:underline text-[11px]"><i class="fas fa-link"></i> Link Akses</a>
+                            <a href="${o.accessLink}" target="_blank" class="text-indigo-600 hover:underline text-[11px]"><i class="fas fa-link"></i> Link</a>
                         </td>
                     </tr>
                 `).join('');
             }
 
+            // Customer DB Table
             const custTable = document.getElementById('sellerCustomerTable');
             if (custTable) {
                 const uniqueCusts = {};
@@ -801,59 +968,6 @@
             }
         }
 
-        // SELLER AUTHENTICATION HANDLERS
-        window.toggleAuthMode = function(mode) {
-            state.authMode = mode;
-            const btnLogin = document.getElementById('btnAuthLogin');
-            const btnSignup = document.getElementById('btnAuthSignup');
-            const extra = document.getElementById('signupExtraFields');
-            const submitBtn = document.getElementById('authSubmitBtn');
-            const title = document.getElementById('authTitle');
-
-            if (mode === 'login') {
-                btnLogin.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900';
-                btnSignup.className = 'flex-1 py-2 rounded-lg text-gray-500';
-                extra.classList.add('hidden');
-                submitBtn.innerText = 'Masuk Ke Seller Hub';
-                title.innerText = 'Seller Log In';
-            } else {
-                btnSignup.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-gray-900';
-                btnLogin.className = 'flex-1 py-2 rounded-lg text-gray-500';
-                extra.classList.remove('hidden');
-                submitBtn.innerText = 'Daftar Akaun Seller';
-                title.innerText = 'Seller Sign Up';
-            }
-        };
-
-        window.handleSellerAuth = function(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            // Simple demo validation (Dua-dua login atau signup disahkan terus)
-            if (password) {
-                state.isSellerLoggedIn = true;
-                showToast('Akses Seller Berjaya!');
-                window.navigateTo('seller');
-                renderSellerDashboard();
-            } else {
-                showToast('Sila masukkan kata laluan.');
-            }
-        };
-
-        window.logoutSeller = function() {
-            state.isSellerLoggedIn = false;
-            showToast('Log Keluar Berjaya');
-            window.navigateTo('home');
-        };
-
-        window.copyStoreLink = function() {
-            const storeUrl = window.location.origin + window.location.pathname;
-            navigator.clipboard.writeText(storeUrl).then(() => {
-                showToast('Link Kedai Pembeli Berjaya Disalin!');
-            });
-        };
-
         // NAVIGATION & ROUTING
         window.navigateTo = function(view) {
             document.getElementById('customerView').classList.add('hidden');
@@ -861,32 +975,23 @@
             document.getElementById('checkoutView').classList.add('hidden');
             document.getElementById('paymentView').classList.add('hidden');
             document.getElementById('successView').classList.add('hidden');
-            document.getElementById('sellerAuthView').classList.add('hidden');
             document.getElementById('sellerView').classList.add('hidden');
 
             if (view === 'home') document.getElementById('customerView').classList.remove('hidden');
-            if (view === 'sellerAuth') document.getElementById('sellerAuthView').classList.remove('hidden');
-            if (view === 'seller') {
-                if (state.isSellerLoggedIn) {
-                    document.getElementById('sellerView').classList.remove('hidden');
-                } else {
-                    document.getElementById('sellerAuthView').classList.remove('hidden');
-                }
-            }
+            if (view === 'seller') document.getElementById('sellerView').classList.remove('hidden');
         };
-
-        // ROUTE ROUTER UNTUK SELLER PORTAL KHAS (?portal=seller)
-        function checkUrlRoute() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('portal') === 'seller') {
-                window.navigateTo('seller');
-            } else {
-                window.navigateTo('home');
-            }
-        }
 
         window.showCustomerStore = function() {
             window.navigateTo('home');
+        };
+
+        window.toggleSellerPanel = function() {
+            const isSellerVisible = !document.getElementById('sellerView').classList.contains('hidden');
+            if (isSellerVisible) {
+                window.navigateTo('home');
+            } else {
+                window.navigateTo('seller');
+            }
         };
 
         window.filterCategory = function(catName) {
@@ -1003,6 +1108,23 @@
         window.openCartModal = function() { document.getElementById('cartModal').classList.remove('hidden'); };
         window.closeCartModal = function() { document.getElementById('cartModal').classList.add('hidden'); };
 
+        // CHECKOUT & PAYMENT METHOD TOGGLER
+        window.toggleCheckoutPaymentMethod = function(method) {
+            const bankSec = document.getElementById('checkoutBankSection');
+            const qrSec = document.getElementById('checkoutQrSection');
+            const buyerBankSelect = document.getElementById('buyerSelectedBank');
+
+            if(method === 'bank') {
+                bankSec.classList.remove('hidden');
+                qrSec.classList.add('hidden');
+                buyerBankSelect.required = true;
+            } else {
+                bankSec.classList.add('hidden');
+                qrSec.classList.remove('hidden');
+                buyerBankSelect.required = false;
+            }
+        };
+
         // CHECKOUT & PAYMENT FLOW
         window.proceedToCheckout = function() {
             window.closeCartModal();
@@ -1033,10 +1155,21 @@
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const email = document.getElementById('custEmail').value;
+            const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
 
             const totalAmount = state.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
+            let selectedBankName = '';
+            let selectedQrType = '';
+
+            if(paymentOption === 'bank') {
+                selectedBankName = document.getElementById('buyerSelectedBank').value;
+            } else {
+                selectedQrType = document.getElementById('buyerSelectedQrType').value;
+            }
+
+            // Store Pending Order
             state.currentOrderPending = {
                 id: orderId,
                 customerName: name,
@@ -1045,17 +1178,57 @@
                 productName: state.cart.map(c => c.name).join(', '),
                 accessLink: state.cart[0].accessLink,
                 amount: totalAmount,
+                paymentOption: paymentOption,
+                selectedBank: selectedBankName,
+                selectedQrType: selectedQrType,
                 paymentStatus: 'PENDING',
                 date: new Date().toISOString()
             };
 
+            // RENDER PAYMENT DISPLAY ACCORDING TO OPTION
+            const payArea = document.getElementById('paymentDisplayArea');
+            if(paymentOption === 'bank') {
+                payArea.innerHTML = `
+                    <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Option 1: Bank Transfer</span>
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Pindahan Bank (${selectedBankName})</h2>
+                    <p class="text-xs text-gray-500 mb-6">Sila lakukan pemindahan wang ke akaun seller di bawah:</p>
+                    
+                    <div class="bg-indigo-50/70 p-5 rounded-2xl mb-6 text-left space-y-2 border border-indigo-100">
+                        <div class="flex justify-between text-xs"><span class="text-gray-500">Nama Penerima:</span><span class="font-bold text-gray-900">${state.finance.bankHolder || 'SCHATELIER STORE'}</span></div>
+                        <div class="flex justify-between text-xs"><span class="text-gray-500">Bank Seller:</span><span class="font-bold text-gray-900">${state.finance.bankName || 'Maybank'}</span></div>
+                        <div class="flex justify-between text-xs"><span class="text-gray-500">No. Akaun Bank:</span><span class="font-mono font-bold text-indigo-600 text-sm">${state.finance.bankAccount || '1234567890'}</span></div>
+                        <div class="flex justify-between text-xs border-t border-indigo-100 pt-2"><span class="text-gray-500">Bank Pilihan Buyer:</span><span class="font-bold text-gray-800">${selectedBankName}</span></div>
+                    </div>
+                `;
+            } else {
+                let qrImgUrl = state.finance.qrBankUrl;
+                let qrTitle = "DuitNow QR / Bank QR";
+                if(selectedQrType === 'qrTng') {
+                    qrImgUrl = state.finance.qrTngUrl || state.finance.qrBankUrl;
+                    qrTitle = "Touch 'N Go eWallet QR";
+                } else if(selectedQrType === 'qrAeon') {
+                    qrImgUrl = state.finance.qrAeonUrl || state.finance.qrBankUrl;
+                    qrTitle = "Aeon Bank QR";
+                }
+
+                payArea.innerHTML = `
+                    <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Option 2: Imbas QR Code</span>
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Imbas ${qrTitle}</h2>
+                    <p class="text-xs text-gray-500 mb-4">Gunakan aplikasi perbankan atau e-wallet anda untuk membuat imbasan</p>
+                    
+                    <div class="bg-indigo-50/50 p-4 rounded-2xl mb-6 inline-block">
+                        <img src="${qrImgUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO'}" alt="QR Code" class="w-48 h-48 mx-auto rounded-xl shadow-md border-4 border-white object-cover">
+                    </div>
+                `;
+            }
+
             document.getElementById('paymentAmountText').innerText = `RM ${totalAmount.toFixed(2)}`;
-            if(state.settings.qrUrl) document.getElementById('paymentQrImg').src = state.settings.qrUrl;
 
             window.navigateTo('payment');
             document.getElementById('paymentView').classList.remove('hidden');
         };
 
+        // SIMULATED PAYMENT WEBHOOK VERIFICATION
         window.simulatePaymentSuccess = function() {
             if (!state.currentOrderPending) return;
 
@@ -1064,14 +1237,23 @@
                 paymentStatus: 'PAID'
             };
 
+            // Push Order to Firebase Realtime Database
             const ordersRef = ref(db, 'orders');
             const newOrderRef = push(ordersRef);
             set(newOrderRef, paidOrder);
 
+            // Trigger Automatic Email Simulation
+            console.log(`[AUTOMATIC EMAIL TRIGGERED]`);
+            console.log(`TO: ${paidOrder.customerEmail}`);
+            console.log(`SUBJECT: Your Digital Product Access — ${paidOrder.productName}`);
+            console.log(`BODY: Hi ${paidOrder.customerName}, Access Link: ${paidOrder.accessLink}`);
+
+            // UI Render Success
             document.getElementById('successOrderId').innerText = paidOrder.id;
             document.getElementById('successEmail').innerText = paidOrder.customerEmail;
             document.getElementById('successAccessLinkBtn').href = paidOrder.accessLink;
 
+            // Clear Cart
             state.cart = [];
             updateCartUI();
 
@@ -1080,7 +1262,7 @@
             showToast('Pembayaran berjaya disahkan!');
         };
 
-        // SELLER DASHBOARD ACTIONS
+        // SELLER ACTIONS
         window.switchSellerTab = function(tabName) {
             document.querySelectorAll('.seller-tab').forEach(t => t.className = 'seller-tab text-gray-500 hover:bg-gray-100 font-bold text-xs px-4 py-2 rounded-lg');
             document.querySelectorAll('.seller-content').forEach(c => c.classList.add('hidden'));
@@ -1112,6 +1294,9 @@
                 shortDesc: document.getElementById('prodShortDesc').value,
                 fullDesc: document.getElementById('prodFullDesc').value,
                 img1: document.getElementById('prodImg1').value,
+                img2: document.getElementById('prodImg2').value,
+                img3: document.getElementById('prodImg3').value,
+                img4: document.getElementById('prodImg4').value,
                 accessLink: document.getElementById('prodAccessLink').value
             };
 
@@ -1172,12 +1357,27 @@
             }
         };
 
+        // FINANCE SETTINGS SAVE
+        window.handleSaveFinanceSettings = function(e) {
+            e.preventDefault();
+            const finData = {
+                bankHolder: document.getElementById('finBankHolder').value,
+                bankName: document.getElementById('finBankName').value,
+                bankAccount: document.getElementById('finBankAccount').value,
+                qrBankUrl: document.getElementById('finQrBankUrl').value,
+                qrTngUrl: document.getElementById('finQrTngUrl').value,
+                qrAeonUrl: document.getElementById('finQrAeonUrl').value
+            };
+
+            set(ref(db, 'finance'), finData);
+            showToast('Tetapan Finance Seller berjaya disimpan.');
+        };
+
         window.handleSaveSettings = function(e) {
             e.preventDefault();
-            const qrUrl = document.getElementById('settingQrUrl').value;
             const sellerEmail = document.getElementById('settingSellerEmail').value;
 
-            set(ref(db, 'settings'), { qrUrl, sellerEmail });
+            set(ref(db, 'settings'), { sellerEmail });
             showToast('Tetapan dikemaskini.');
         };
 
@@ -1190,9 +1390,9 @@
             }, 3000);
         }
 
+        // INIT APP
         window.addEventListener('DOMContentLoaded', () => {
             initDbListeners();
-            checkUrlRoute();
         });
     </script>
 </body>
