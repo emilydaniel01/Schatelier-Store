@@ -20,7 +20,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
-        <i id="toast-icon" class="fas fa-info-circle text-indigo-400"></i>
+        <i id="toast-icon" class="fas font-medium"></i>
         <span id="toast-message" class="text-sm font-medium"></span>
     </div>
 
@@ -128,6 +128,10 @@
                         <video id="detailVideo" controls class="w-full h-full object-cover hidden"></video>
                         <span id="detailBadge" class="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">NEW</span>
                     </div>
+                    <!-- Thumbnails -->
+                    <div id="detailThumbnails" class="flex space-x-3 overflow-x-auto pb-2">
+                        <!-- Dynamic Media Thumbnails -->
+                    </div>
                 </div>
                 <!-- Details & Actions -->
                 <div class="flex flex-col justify-between">
@@ -206,58 +210,33 @@
         </div>
 
         <!-- PAYMENT SECTION (HIDDEN BY DEFAULT) -->
-        <div id="paymentView" class="hidden max-w-xl mx-auto text-center">
+        <div id="paymentView" class="hidden max-w-lg mx-auto text-center">
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
                 <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Pembayaran Imbas QR</span>
-                <h2 class="text-xl font-bold text-gray-900 mb-1">Pilih Kaedah QR & Imbas Untuk Bayar</h2>
-                <p class="text-xs text-gray-500 mb-5">Sila pilih provider pembayaran pilihan anda di bawah</p>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Imbas Untuk Bayar</h2>
+                <p class="text-xs text-gray-500 mb-4">Gunakan mana-mana aplikasi DuitNow QR / E-Wallet / Online Banking</p>
+                
+                <div class="bg-indigo-50/50 p-4 rounded-2xl mb-6 inline-block">
+                    <img id="paymentQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_PAYMENT" alt="DuitNow QR" class="w-48 h-48 mx-auto rounded-xl shadow-md border-4 border-white">
+                </div>
 
-                <!-- Dynamic Dynamic Price Display pada QR -->
-                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl p-4 mb-6 text-center">
-                    <span class="text-xs text-gray-500 block uppercase font-semibold tracking-wider mb-0.5">Jumlah Perlu Dibayar</span>
+                <div class="mb-6">
+                    <span class="text-xs text-gray-500 block">Jumlah Perlu Dibayar</span>
                     <span id="paymentAmountText" class="text-3xl font-extrabold text-indigo-600">RM 0.00</span>
                 </div>
-                
-                <!-- PILIHAN QR PROVIDER BUTTONS -->
-                <div class="grid grid-cols-3 gap-2.5 mb-6">
-                    <button id="qrTab-bank" onclick="selectQrProvider('bank')" class="p-3 border-2 border-indigo-600 bg-indigo-50/50 rounded-2xl flex flex-col items-center justify-center text-indigo-900 transition font-semibold text-xs">
-                        <i class="fas fa-university text-lg mb-1 text-indigo-600"></i>
-                        <span>QR Bank</span>
-                    </button>
-                    <button id="qrTab-tng" onclick="selectQrProvider('tng')" class="p-3 border-2 border-gray-100 bg-white rounded-2xl flex flex-col items-center justify-center text-gray-600 hover:border-gray-200 transition font-semibold text-xs">
-                        <i class="fas fa-wallet text-lg mb-1 text-blue-500"></i>
-                        <span>Touch 'n Go</span>
-                    </button>
-                    <button id="qrTab-aeon" onclick="selectQrProvider('aeon')" class="p-3 border-2 border-gray-100 bg-white rounded-2xl flex flex-col items-center justify-center text-gray-600 hover:border-gray-200 transition font-semibold text-xs">
-                        <i class="fas fa-qrcode text-lg mb-1 text-purple-600"></i>
-                        <span>Aeon Bank</span>
-                    </button>
-                </div>
 
-                <!-- QR DISPLAY CARD -->
-                <div class="bg-gray-50 p-5 rounded-2xl mb-6 inline-block w-full border border-gray-100 relative">
-                    <div class="relative inline-block">
-                        <img id="paymentQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEMO_PAYMENT" alt="QR Code Pembayaran" class="w-52 h-52 mx-auto rounded-xl shadow-md border-4 border-white object-contain bg-white">
-                        <!-- Dynamic overlay badge price on top of QR -->
-                        <div class="mt-3 bg-indigo-600 text-white text-xs font-bold py-1 px-4 rounded-full inline-flex items-center space-x-1 shadow-sm">
-                            <i class="fas fa-tag text-[10px]"></i>
-                            <span id="qrBadgePrice">RM 0.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-4 rounded-xl text-xs text-gray-600 text-left mb-6 space-y-1 border border-gray-100">
+                <div class="bg-gray-50 p-3 rounded-xl text-xs text-gray-600 text-left mb-6 space-y-1">
                     <p class="font-semibold text-gray-800">Nota Arahan:</p>
-                    <p>1. Imbas QR di atas mengikut penyedia aplikasi yang dipilih.</p>
-                    <p>2. Pastikan jumlah amaun bayaran yang diimbas adalah tepat seperti yang tertera.</p>
-                    <p>3. Selepas membuat bayaran, klik butang simulasi di bawah untuk mendapatkan akses serta-merta.</p>
+                    <p>1. Imbas QR di atas menggunakan Bank/E-Wallet anda.</p>
+                    <p>2. Pastikan amaun imbasan tepat seperti di atas.</p>
+                    <p>3. Sistem mengesahkan transaksi secara automatik.</p>
                 </div>
 
                 <!-- Webhook / Gateway Simulator Section -->
-                <div class="border-t border-gray-100 pt-5">
-                    <p class="text-[11px] text-gray-400 mb-3 uppercase tracking-wider font-medium">Pengesahan Pembayaran Automatik</p>
-                    <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3.5 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
-                        <i class="fas fa-check-circle text-base"></i>
+                <div class="border-t border-gray-100 pt-6">
+                    <p class="text-[11px] text-gray-400 mb-3 uppercase tracking-wider font-medium">Demo & Test Gateway Simulation</p>
+                    <button onclick="simulatePaymentSuccess()" class="w-full bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 flex items-center justify-center space-x-2">
+                        <i class="fas fa-check-circle"></i>
                         <span>Simulasi Bayaran Berjaya</span>
                     </button>
                 </div>
@@ -447,64 +426,20 @@
                 </div>
             </div>
 
-            <!-- TAB: SETTINGS & QR UPLOAD -->
+            <!-- TAB: SETTINGS -->
             <div id="seller-settings" class="seller-content hidden">
-                <div class="max-w-2xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h3 class="font-bold text-base text-gray-900 mb-1">Tetapan Pembayaran & Muat Naik QR Provider</h3>
-                    <p class="text-xs text-gray-500 mb-6">Muat naik fail imej (.png / .jpg) bagi setiap provider. Kod akan menukar fail imej ke Base64 secara automatik dan menyimpannya.</p>
-                    
-                    <form onsubmit="handleSaveSettings(event)" class="space-y-6">
-                        
-                        <!-- UPLOAD QR PROVIDER SECTIONS -->
-                        <div class="space-y-4">
-                            <!-- 1. QR BANK -->
-                            <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/80">
-                                <label class="block text-xs font-bold text-gray-800 mb-1 flex items-center justify-between">
-                                    <span><i class="fas fa-university text-indigo-600 mr-1.5"></i> QR Bank (DuitNow QR / Online Banking)</span>
-                                    <span id="qrBankStatus" class="text-[10px] text-emerald-600 font-semibold hidden"><i class="fas fa-check-circle"></i> Sedia</span>
-                                </label>
-                                <input type="file" id="fileQrBank" accept=".png, .jpg, .jpeg" onchange="convertAndPreviewQr('bank', this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                                <div id="previewContainerBank" class="mt-3 hidden flex items-center space-x-3">
-                                    <img id="previewBank" src="" class="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white">
-                                    <span class="text-[11px] text-gray-500">Pratonton Imej QR Bank (Base64)</span>
-                                </div>
-                            </div>
-
-                            <!-- 2. QR TOUCH N GO -->
-                            <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/80">
-                                <label class="block text-xs font-bold text-gray-800 mb-1 flex items-center justify-between">
-                                    <span><i class="fas fa-wallet text-blue-500 mr-1.5"></i> QR Touch 'n Go eWallet</span>
-                                    <span id="qrTngStatus" class="text-[10px] text-emerald-600 font-semibold hidden"><i class="fas fa-check-circle"></i> Sedia</span>
-                                </label>
-                                <input type="file" id="fileQrTng" accept=".png, .jpg, .jpeg" onchange="convertAndPreviewQr('tng', this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                <div id="previewContainerTng" class="mt-3 hidden flex items-center space-x-3">
-                                    <img id="previewTng" src="" class="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white">
-                                    <span class="text-[11px] text-gray-500">Pratonton Imej QR Touch 'n Go (Base64)</span>
-                                </div>
-                            </div>
-
-                            <!-- 3. QR AEON BANK -->
-                            <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/80">
-                                <label class="block text-xs font-bold text-gray-800 mb-1 flex items-center justify-between">
-                                    <span><i class="fas fa-qrcode text-purple-600 mr-1.5"></i> QR Aeon Bank</span>
-                                    <span id="qrAeonStatus" class="text-[10px] text-emerald-600 font-semibold hidden"><i class="fas fa-check-circle"></i> Sedia</span>
-                                </label>
-                                <input type="file" id="fileQrAeon" accept=".png, .jpg, .jpeg" onchange="convertAndPreviewQr('aeon', this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-                                <div id="previewContainerAeon" class="mt-3 hidden flex items-center space-x-3">
-                                    <img id="previewAeon" src="" class="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white">
-                                    <span class="text-[11px] text-gray-500">Pratonton Imej QR Aeon Bank (Base64)</span>
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="max-w-xl bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-sm text-gray-900 mb-4">Tetapan Pembayaran DuitNow QR</h3>
+                    <form onsubmit="handleSaveSettings(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Email Penerima Notifikasi Seller</label>
-                            <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Gambar URL QR Code Pembayaran</label>
+                            <input type="url" id="settingQrUrl" placeholder="https://..." class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
                         </div>
-
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-xs py-3 rounded-xl hover:bg-indigo-700 transition shadow-md shadow-indigo-100">
-                            Simpan Semua Tetapan & Kod QR
-                        </button>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Email Penerima Notifikasi Seller</label>
+                            <input type="email" id="settingSellerEmail" placeholder="seller@schatelier.com" class="w-full text-xs border border-gray-200 rounded-lg p-2.5">
+                        </div>
+                        <button type="submit" class="bg-indigo-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition">Simpan Tetapan</button>
                     </form>
                 </div>
             </div>
@@ -645,11 +580,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // DEFAULT STANDBY QR CODES
-        const DEFAULT_QR_BANK = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=SCHATELIER_DEMO_BANK_QR";
-        const DEFAULT_QR_TNG = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=SCHATELIER_DEMO_TNG_QR";
-        const DEFAULT_QR_AEON = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=SCHATELIER_DEMO_AEON_QR";
-
         // STATE APP DATA
         let state = {
             categories: [],
@@ -660,20 +590,10 @@
             activeCategory: 'All',
             activeProductDetail: null,
             currentOrderPending: null,
-            selectedQrProvider: 'bank',
             settings: {
-                qrBank: DEFAULT_QR_BANK,
-                qrTng: DEFAULT_QR_TNG,
-                qrAeon: DEFAULT_QR_AEON,
+                qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCHATELIER_DEFAULT_DUITNOW',
                 sellerEmail: 'admin@schatelier.com'
             }
-        };
-
-        // TEMP BASE64 STORAGE BEFORE SAVING
-        let uploadedBase64 = {
-            bank: null,
-            tng: null,
-            aeon: null
         };
 
         // INITIAL REALTIME DATABASE LISTENERS
@@ -700,28 +620,15 @@
             onValue(ref(db, 'settings'), (snapshot) => {
                 const data = snapshot.val();
                 if(data) {
-                    state.settings = { ...state.settings, ...data };
-                    // Set inputs & preview status if settings exist
-                    if (state.settings.sellerEmail) {
-                        const emailInput = document.getElementById('settingSellerEmail');
-                        if (emailInput) emailInput.value = state.settings.sellerEmail;
+                    state.settings = data;
+                    if(data.qrUrl) {
+                        const qrImg = document.getElementById('settingQrUrl');
+                        if (qrImg) qrImg.value = data.qrUrl;
                     }
-                    updateQrSettingsPreviewUI();
-                }
-            });
-        }
-
-        function updateQrSettingsPreviewUI() {
-            ['bank', 'tng', 'aeon'].forEach(type => {
-                const key = 'qr' + type.charAt(0).toUpperCase() + type.slice(1);
-                const statusEl = document.getElementById(`qr${type.charAt(0).toUpperCase() + type.slice(1)}Status`);
-                const containerEl = document.getElementById(`previewContainer${type.charAt(0).toUpperCase() + type.slice(1)}`);
-                const imgEl = document.getElementById(`preview${type.charAt(0).toUpperCase() + type.slice(1)}`);
-                
-                if (state.settings[key]) {
-                    if (statusEl) statusEl.classList.remove('hidden');
-                    if (containerEl) containerEl.classList.remove('hidden');
-                    if (imgEl) imgEl.src = state.settings[key];
+                    if(data.sellerEmail) {
+                        const emailInput = document.getElementById('settingSellerEmail');
+                        if (emailInput) emailInput.value = data.sellerEmail;
+                    }
                 }
             });
         }
@@ -916,17 +823,22 @@
             }
         }
 
-        // NAVIGATION & ROUTING
+        // NAVIGATION & ROUTING FIXED (PREVENT DUPLICATE SECTIONS)
         window.navigateTo = function(view) {
-            document.getElementById('customerView').classList.add('hidden');
-            document.getElementById('productDetailView').classList.add('hidden');
-            document.getElementById('checkoutView').classList.add('hidden');
-            document.getElementById('paymentView').classList.add('hidden');
-            document.getElementById('successView').classList.add('hidden');
-            document.getElementById('sellerView').classList.add('hidden');
+            const views = ['customerView', 'productDetailView', 'checkoutView', 'paymentView', 'successView', 'sellerView'];
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (el) el.classList.add('hidden');
+            });
 
             if (view === 'home') document.getElementById('customerView').classList.remove('hidden');
             if (view === 'seller') document.getElementById('sellerView').classList.remove('hidden');
+            if (view === 'detail') document.getElementById('productDetailView').classList.remove('hidden');
+            if (view === 'checkout') document.getElementById('checkoutView').classList.remove('hidden');
+            if (view === 'payment') document.getElementById('paymentView').classList.remove('hidden');
+            if (view === 'success') document.getElementById('successView').classList.remove('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         window.showCustomerStore = function() {
@@ -1001,8 +913,6 @@
             };
 
             window.navigateTo('detail');
-            document.getElementById('productDetailView').classList.remove('hidden');
-            document.getElementById('customerView').classList.add('hidden');
         };
 
         // CART SYSTEM
@@ -1078,7 +988,6 @@
             document.getElementById('checkoutTotal').innerText = `RM ${total.toFixed(2)}`;
 
             window.navigateTo('checkout');
-            document.getElementById('checkoutView').classList.remove('hidden');
         };
 
         window.handleProceedToPayment = function(e) {
@@ -1097,88 +1006,19 @@
                 customerPhone: phone,
                 customerEmail: email,
                 productName: state.cart.map(c => c.name).join(', '),
-                accessLink: state.cart.map(c => c.accessLink).join(' | '),
+                accessLink: state.cart[0].accessLink, // Delivery link
                 amount: totalAmount,
                 paymentStatus: 'PENDING',
                 date: new Date().toISOString()
             };
 
-            // DYNAMIC PRICE DISPLAY ON QR
-            const formattedPrice = `RM ${totalAmount.toFixed(2)}`;
-            document.getElementById('paymentAmountText').innerText = formattedPrice;
-            document.getElementById('qrBadgePrice').innerText = formattedPrice;
-
-            // Render Default QR Provider (Bank)
-            selectQrProvider('bank');
+            document.getElementById('paymentAmountText').innerText = `RM ${totalAmount.toFixed(2)}`;
+            if(state.settings.qrUrl) document.getElementById('paymentQrImg').src = state.settings.qrUrl;
 
             window.navigateTo('payment');
-            document.getElementById('paymentView').classList.remove('hidden');
         };
 
-        // PILIHAN PROVIDER QR SCANNER
-        window.selectQrProvider = function(providerKey) {
-            state.selectedQrProvider = providerKey;
-            
-            // Tab Buttons Styling
-            const tabs = {
-                bank: document.getElementById('qrTab-bank'),
-                tng: document.getElementById('qrTab-tng'),
-                aeon: document.getElementById('qrTab-aeon')
-            };
-
-            Object.keys(tabs).forEach(k => {
-                if (tabs[k]) {
-                    tabs[k].className = (k === providerKey) 
-                        ? 'p-3 border-2 border-indigo-600 bg-indigo-50/50 rounded-2xl flex flex-col items-center justify-center text-indigo-900 transition font-semibold text-xs shadow-sm'
-                        : 'p-3 border-2 border-gray-100 bg-white rounded-2xl flex flex-col items-center justify-center text-gray-600 hover:border-gray-200 transition font-semibold text-xs';
-                }
-            });
-
-            // Set Image QR Code according to settings or defaults
-            const qrImg = document.getElementById('paymentQrImg');
-            if (providerKey === 'bank') {
-                qrImg.src = state.settings.qrBank || DEFAULT_QR_BANK;
-            } else if (providerKey === 'tng') {
-                qrImg.src = state.settings.qrTng || DEFAULT_QR_TNG;
-            } else if (providerKey === 'aeon') {
-                qrImg.src = state.settings.qrAeon || DEFAULT_QR_AEON;
-            }
-        };
-
-        // CONVERT UPLOADED IMAGE (PNG/JPG) TO BASE64 AUTOMATICALLY
-        window.convertAndPreviewQr = function(providerType, inputElement) {
-            const file = inputElement.files[0];
-            if (!file) return;
-
-            if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
-                showToast('Hanya fail fail PNG dan JPG sahaja dibenarkan!');
-                inputElement.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Data = e.target.result;
-                uploadedBase64[providerType] = base64Data;
-
-                const capitalized = providerType.charAt(0).toUpperCase() + providerType.slice(1);
-                const previewImg = document.getElementById(`preview${capitalized}`);
-                const previewContainer = document.getElementById(`previewContainer${capitalized}`);
-                const statusEl = document.getElementById(`qr${capitalized}Status`);
-
-                if (previewImg) previewImg.src = base64Data;
-                if (previewContainer) previewContainer.classList.remove('hidden');
-                if (statusEl) {
-                    statusEl.classList.remove('hidden');
-                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Sedia Untuk Disimpan`;
-                }
-
-                showToast(`Gambar QR ${capitalized} berjaya ditukar ke Base64.`);
-            };
-            reader.readAsDataURL(file);
-        };
-
-        // SIMULATED PAYMENT WEBHOOK VERIFICATION & AUTOMATIC LINK DELIVERY
+        // SIMULATED PAYMENT WEBHOOK VERIFICATION
         window.simulatePaymentSuccess = function() {
             if (!state.currentOrderPending) return;
 
@@ -1192,26 +1032,23 @@
             const newOrderRef = push(ordersRef);
             set(newOrderRef, paidOrder);
 
-            // SIMULATED AUTOMATIC EMAIL DELIVERY LOG
-            console.log(`==================================================`);
-            console.log(`[AUTOMATIC EMAIL ENGINE SENT SUCCESSFULLY]`);
+            // Trigger Automatic Email Simulation
+            console.log(`[AUTOMATIC EMAIL TRIGGERED]`);
             console.log(`TO: ${paidOrder.customerEmail}`);
-            console.log(`SUBJECT: Akses Produk Digital Anda — ${paidOrder.productName}`);
-            console.log(`BODY: Assalamu'alaikum / Salam Sejahtera ${paidOrder.customerName},\n\nTerima kasih atas Pembayaran RM ${parseFloat(paidOrder.amount).toFixed(2)}.\n\nPautan Akses Produk Digital Anda:\n${paidOrder.accessLink}\n\nSalam Mesra,\nSchatelier Store`);
-            console.log(`==================================================`);
+            console.log(`SUBJECT: Your Digital Product Access — ${paidOrder.productName}`);
+            console.log(`BODY: Hi ${paidOrder.customerName}, Access Link: ${paidOrder.accessLink}`);
 
-            // UI Render Success View & Link
+            // UI Render Success
             document.getElementById('successOrderId').innerText = paidOrder.id;
             document.getElementById('successEmail').innerText = paidOrder.customerEmail;
-            document.getElementById('successAccessLinkBtn').href = paidOrder.accessLink.split(' | ')[0]; // Access first link or all
+            document.getElementById('successAccessLinkBtn').href = paidOrder.accessLink;
 
             // Clear Cart
             state.cart = [];
             updateCartUI();
 
             window.navigateTo('success');
-            document.getElementById('successView').classList.remove('hidden');
-            showToast('Pembayaran berjaya! Link akses dihantar ke email & skrin.');
+            showToast('Pembayaran berjaya disahkan!');
         };
 
         // SELLER ACTIONS
@@ -1310,23 +1147,13 @@
             }
         };
 
-        // SAVE SETTINGS & QR BASE64 IMAGES TO FIREBASE
         window.handleSaveSettings = function(e) {
             e.preventDefault();
+            const qrUrl = document.getElementById('settingQrUrl').value;
             const sellerEmail = document.getElementById('settingSellerEmail').value;
 
-            const updatedSettings = {
-                ...state.settings,
-                sellerEmail: sellerEmail
-            };
-
-            if (uploadedBase64.bank) updatedSettings.qrBank = uploadedBase64.bank;
-            if (uploadedBase64.tng) updatedSettings.qrTng = uploadedBase64.tng;
-            if (uploadedBase64.aeon) updatedSettings.qrAeon = uploadedBase64.aeon;
-
-            set(ref(db, 'settings'), updatedSettings).then(() => {
-                showToast('Tetapan & fail QR Base64 berjaya disimpan ke Firebase!');
-            });
+            set(ref(db, 'settings'), { qrUrl, sellerEmail });
+            showToast('Tetapan dikemaskini.');
         };
 
         function showToast(msg) {
